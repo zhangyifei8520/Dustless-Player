@@ -28,8 +28,6 @@ test("server-renders the cartridge game prototype", async () => {
   assert.match(html, /class="nav-icon nav-library"/);
   assert.match(html, /class="nav-icon nav-about"/);
   assert.match(html, /<title>不吃灰｜收藏卡带放映机<\/title>/i);
-  assert.match(html, /把收藏，/);
-  assert.match(html, /插回生活里。/);
   assert.match(html, /HB-01/);
   assert.match(html, /LS-02/);
   assert.match(html, /CR-03/);

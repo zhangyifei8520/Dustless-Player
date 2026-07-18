@@ -38,5 +38,31 @@ The rendered HTML still contained `/assets/game-console.png`, `REPLAY YOUR SAVES
 
 ## Concerns
 
-- The existing test still positively asserts `把收藏，` and `插回生活里。`; this intentionally remains unchanged because Task 1 only requests adding the failing assertions. A later implementation task will need to reconcile those legacy assertions with the revised desktop contract.
+- At the initial RED run, the existing test still positively asserted `把收藏，` and `插回生活里。`; those contradictory assertions were removed in the Fix After Review section below.
 - The build emitted existing Vinext warnings about proxy environment variables, deprecated `module.register()`, and dynamic route classification; none caused the RED result.
+
+## Fix After Review
+
+Removed the contradictory legacy positive assertions for `把收藏，` and `插回生活里。` from `tests/rendered-html.test.mjs`.
+
+Exact command rerun:
+
+```bash
+npm run build && node --test tests/rendered-html.test.mjs
+```
+
+Relevant output:
+
+```text
+Build complete. Run `vinext start` to start the production server.
+
+✖ server-renders the cartridge game prototype
+AssertionError [ERR_ASSERTION]: The input did not match the regular expression /\/assets\/computer2\.png/.
+Input contains /assets/game-console.png; navigation buttons still lack the named nav-icon classes.
+tests 1
+pass 0
+fail 1
+exit code 1
+```
+
+The test remains RED only on the missing revised production asset/navigation structure; the contradictory copy assertions are no longer present.

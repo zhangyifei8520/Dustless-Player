@@ -46,17 +46,10 @@ export function CartridgeCard({
       <div className="cartridge-label">
         <div className="cartridge-source">
           <span>{cartridge.source === "bilibili" ? "BILI" : "RED"}</span>
-          <small>{cartridge.category}</small>
         </div>
         <h3>{cartridge.title}</h3>
         <p>{cartridge.summary}</p>
       </div>
-      <footer className="cartridge-foot">
-        <span className={`status status-${active ? "playing" : cartridge.status}`}>
-          {active ? "PLAYING" : cartridge.status.toUpperCase()}
-        </span>
-        <time>{cartridge.date}</time>
-      </footer>
       <button
         className="cartridge-play"
         type="button"

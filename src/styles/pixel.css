@@ -541,15 +541,6 @@
   text-shadow: 1px 1px 0 var(--ink);
 }
 
-.cartridge-source small {
-  overflow: hidden;
-  color: #64708d;
-  font-size: clamp(5px, 0.65vw, 8px);
-  font-weight: 800;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .cartridge-label h3 {
   margin: 4px 0 3px;
   overflow: hidden;
@@ -571,26 +562,6 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
-
-.cartridge-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 24px;
-  margin-top: 4%;
-  font-size: clamp(6px, 0.72vw, 9px);
-  font-weight: 950;
-}
-
-.status {
-  padding: 3px 5px;
-  border: 2px solid var(--ink);
-  border-radius: 4px;
-  background: var(--cream);
-}
-
-.status-playing { color: #78e6a8; background: var(--ink); }
-.status-ready { color: #1a7854; }
 
 .cartridge-play {
   position: absolute;
@@ -823,10 +794,8 @@
   .cartridge-head { font-size: 11px; }
   .cartridge-label { margin-top: 7px; padding: 10px 12px; }
   .cartridge-source span { font-size: 16px; }
-  .cartridge-source small { font-size: 9px; }
   .cartridge-label h3 { margin-top: 6px; font-size: 15px; }
   .cartridge-label p { font-size: 10px; -webkit-line-clamp: 3; }
-  .cartridge-foot { margin-top: 7px; font-size: 10px; }
   .cartridge-play { height: 34px; font-size: 10px; }
   .drag-hint { display: none; }
   .idle-screen small { display: none; }

@@ -4,6 +4,8 @@ import test from "node:test";
 
 const cssPath = new URL("../src/styles/pixel.css", import.meta.url);
 const consolePath = new URL("../src/components/GameConsole.tsx", import.meta.url);
+const cartridgePath = new URL("../src/components/CartridgeCard.tsx", import.meta.url);
+const cartridgesPath = new URL("../src/data/cartridges.ts", import.meta.url);
 
 function selectorRule(css, selector) {
   const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -52,6 +54,26 @@ test("navigation artwork and fullscreen label use the calibrated color geometry"
   assert.match(lastSelectorRule(css, ".nav-library::after"), /height:\s*3px;/);
   assert.match(selectorRule(css, ".nav-about"), /font-size:\s*15px;/);
   assert.match(selectorRule(css, ".fullscreen-control small"), /color:\s*#000;/);
+});
+
+test("cartridge cards only show source, title, and summary", async () => {
+  const [cardSource, cartridgeData] = await Promise.all([
+    readFile(cartridgePath, "utf8"),
+    readFile(cartridgesPath, "utf8"),
+  ]);
+
+  assert.match(cardSource, /className="cartridge-source"/);
+  assert.match(cardSource, /<h3>\{cartridge\.title\}<\/h3>/);
+  assert.match(cardSource, /<p>\{cartridge\.summary\}<\/p>/);
+  assert.doesNotMatch(cardSource, /cartridge-source small/);
+  assert.doesNotMatch(cardSource, /cartridge\.category/);
+  assert.doesNotMatch(cardSource, /cartridge-foot/);
+  assert.doesNotMatch(cardSource, /status-/);
+  assert.doesNotMatch(cardSource, /cartridge\.status/);
+  assert.doesNotMatch(cardSource, /cartridge\.date/);
+  assert.doesNotMatch(cartridgeData, /category:/);
+  assert.doesNotMatch(cartridgeData, /status:/);
+  assert.doesNotMatch(cartridgeData, /date:/);
 });
 
 test("cartridge groups and fullscreen video use the calibrated viewport geometry", async () => {

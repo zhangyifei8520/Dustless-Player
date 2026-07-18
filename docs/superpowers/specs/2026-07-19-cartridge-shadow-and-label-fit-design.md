@@ -7,8 +7,8 @@ Correct the cartridge layering and information-panel fit to match the confirmed 
 ## Card shadow
 
 - The black rounded shadow remains behind the coloured cartridge in stacking order.
-- Its left and right edges exactly match the coloured cartridge; it has no horizontal offset.
-- It is translated downward by 8px, so black appears only as a narrow base below the coloured card and never as a right-side slab.
+- Do not change any of its existing geometric positioning: `top`, `right`, `left`, `width`, and `height` remain exactly as they are.
+- The correction is exclusively a layering change; no horizontal or vertical movement is permitted.
 
 ## Information panel and play strip
 

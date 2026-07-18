@@ -1,4 +1,5 @@
 import type { Cartridge } from "../data/cartridges";
+import { getPlaybackTarget } from "../lib/playbackTarget";
 
 type SimulatedPlayerProps = {
   cartridge: Cartridge;
@@ -9,26 +10,28 @@ export function SimulatedPlayer({
   cartridge,
   fullscreen = false,
 }: SimulatedPlayerProps) {
+  const target = getPlaybackTarget(cartridge);
+
   return (
     <div className={`sim-player ${fullscreen ? "is-fullscreen" : ""}`}>
-      <div className="sim-scanlines" aria-hidden="true" />
-      <div className="sim-topline">
-        <span className="sim-live"><i /> PLAYING</span>
-        <span>{cartridge.source === "bilibili" ? "BILIBILI" : "小红书"}</span>
-      </div>
-      <div className="sim-content">
-        <div className={`sim-tape-mark tape-${cartridge.color}`}>
-          {cartridge.code.slice(0, 2)}
+      {target.kind === "embed" ? (
+        <iframe
+          className="sim-player-embed"
+          src={target.src}
+          title={`${cartridge.title} - Bilibili 播放器`}
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+        />
+      ) : (
+        <div className="sim-external">
+          <span>{cartridge.source === "xiaohongshu" ? "小红书" : "外部平台"}</span>
+          <h2>{cartridge.title}</h2>
+          <p>该平台限制站内播放，请在原页面观看。</p>
+          <a href={target.url} target="_blank" rel="noopener noreferrer">
+            打开原链接
+          </a>
         </div>
-        <p className="sim-kicker">NOW WATCHING / 当前播放</p>
-        <h2>{cartridge.title}</h2>
-        <p className="sim-summary">{cartridge.summary}</p>
-      </div>
-      <div className="sim-controls">
-        <span className="sim-pause" aria-hidden="true">Ⅱ</span>
-        <div className="sim-timeline"><span /></div>
-        <span>02:14 / 08:32</span>
-      </div>
+      )}
     </div>
   );
 }

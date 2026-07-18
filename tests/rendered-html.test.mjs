@@ -32,5 +32,7 @@ test("server-renders the cartridge game prototype", async () => {
   assert.match(html, /LS-02/);
   assert.match(html, /CR-03/);
   assert.match(html, /全屏播放/);
+  assert.doesNotMatch(html, /PIXEL REPLAY/);
+  assert.doesNotMatch(html, />\s*回看\s*</);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);
 });

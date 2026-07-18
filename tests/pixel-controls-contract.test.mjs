@@ -53,3 +53,21 @@ test("navigation artwork and fullscreen label use the calibrated color geometry"
   assert.match(selectorRule(css, ".nav-about"), /font-size:\s*15px;/);
   assert.match(selectorRule(css, ".fullscreen-control small"), /color:\s*#000;/);
 });
+
+test("cartridge groups and fullscreen video use the calibrated viewport geometry", async () => {
+  const css = await readFile(cssPath, "utf8");
+
+  const cardRack = selectorRule(css, ".card-rack");
+  assert.match(cardRack, /left:\s*14%;/);
+  assert.match(cardRack, /right:\s*14%;/);
+  assert.match(cardRack, /height:\s*21%;/);
+
+  const cartridgePlay = selectorRule(css, ".cartridge-play");
+  assert.match(cartridgePlay, /left:\s*3%;/);
+  assert.match(cartridgePlay, /right:\s*3%;/);
+  assert.match(cartridgePlay, /height:\s*clamp\(36px,\s*5\.5vw,\s*52px\);/);
+
+  const fullscreenFrame = selectorRule(css, ".fullscreen-frame");
+  assert.match(fullscreenFrame, /width:[^;]*92vw/);
+  assert.match(fullscreenFrame, /width:[^;]*100dvh/);
+});

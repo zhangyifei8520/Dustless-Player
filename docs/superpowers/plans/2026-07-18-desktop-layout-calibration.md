@@ -12,7 +12,7 @@
 
 - Remove the upper-left brand and the complete left promotional copy block.
 - Preserve all existing playback, loading, Power, fullscreen, Escape, drag/drop, and navigation-feedback behavior.
-- Use `组件/computer2.png` as the console structure reference and `Clipboard - 2026-07-18 18.15.34.png` as the 16:9 idle wallpaper.
+- Use `组件/computer2.png` as the console structure reference and preserve `Clipboard - 2026-07-18 18.15.34.png` at its original 1672×941 pixels as the near-16:9 idle wallpaper; do not resample it.
 - Do not add an icon package or rebuild the console illustration.
 - Desktop acceptance viewports are exactly 1920×1080 and 1440×900.
 - Mobile CSS may remain but receives no additional visual tuning in this plan.
@@ -82,7 +82,7 @@ cp '/Users/zhangyifei/我的灵感素材/我的灵感素材.library/images/MRQ7O
 sips -g pixelWidth -g pixelHeight public/assets/computer2.png public/assets/screen-wallpaper.png
 ```
 
-Expected: `computer2.png` is 987×969 and `screen-wallpaper.png` is 1920×1080.
+Expected: `computer2.png` is 987×969 and `screen-wallpaper.png` is 1672×941. CSS supplies the exact 16:9 viewport without resampling this pixel artwork.
 
 - [ ] **Step 2: Commit the assets**
 
@@ -141,8 +141,8 @@ Change the console image source to `/assets/computer2.png`. Replace the idle con
     {/* eslint-disable-next-line @next/next/no-img-element */}
     <img
       src="/assets/screen-wallpaper.png"
-      width={1920}
-      height={1080}
+      width={1672}
+      height={941}
       alt="像素山海桌面壁纸"
     />
     <div className="idle-prompt">
@@ -424,4 +424,3 @@ Expected: all checks pass and the working tree is clean after any final calibrat
 - [ ] **Step 6: Save and privately deploy the new Sites version**
 
 Push the exact verified commit to the configured Sites source repository, package with `scripts/package-site.sh`, save one new version, deploy privately, and poll until deployment status is `succeeded`.
-

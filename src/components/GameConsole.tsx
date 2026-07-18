@@ -93,7 +93,6 @@ export function GameConsole() {
                 />
                 <div className="idle-prompt">
                   <span aria-hidden="true"><i /><i /><i /></span>
-                  <strong>PIXEL REPLAY</strong>
                   <small>点击或拖拽一张卡带开始播放</small>
                 </div>
               </div>

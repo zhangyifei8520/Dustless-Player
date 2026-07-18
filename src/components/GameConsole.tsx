@@ -53,42 +53,49 @@ export function GameConsole() {
   return (
     <>
       <header className="site-header">
-        <a className="brand" href="#console" aria-label="不吃灰首页">
-          <span className="brand-cubes" aria-hidden="true"><i /><i /><i /></span>
-          <span><strong>不吃灰</strong><small>REPLAY YOUR SAVES</small></span>
-        </a>
         <nav aria-label="主导航">
-          <button type="button" onClick={() => showNavNotice("首页")}><span>⌂</span> 首页</button>
-          <button type="button" onClick={() => showNavNotice("收藏库")}><span>▣</span> 收藏库</button>
-          <button type="button" onClick={() => showNavNotice("关于")}><span>?</span> 关于</button>
+          <button type="button" onClick={() => showNavNotice("首页")}>
+            <span className="nav-icon nav-home" aria-hidden="true" />
+            首页
+          </button>
+          <button type="button" onClick={() => showNavNotice("收藏库")}>
+            <span className="nav-icon nav-library" aria-hidden="true" />
+            收藏库
+          </button>
+          <button type="button" onClick={() => showNavNotice("关于")}>
+            <span className="nav-icon nav-about" aria-hidden="true">?</span>
+            关于
+          </button>
         </nav>
       </header>
 
       <section className="console-section" id="console" aria-label="收藏卡带放映机">
-        <div className="console-copy">
-          <p>DAILY REPLAY / 每日回看</p>
-          <h1>把收藏，<em>插回生活里。</em></h1>
-          <span>拖拽卡带到插槽，或点击播放。今天就看完一条。</span>
-        </div>
-
         <div className="console-stage">
           {/* The source asset is already an exact-size local PNG; optimization would soften its pixel edges. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="console-art"
-            src="/assets/game-console.png"
-            width={854}
-            height={845}
+            src="/assets/computer2.png"
+            width={987}
+            height={969}
             alt="像素风游戏主机与卡带柜"
           />
 
           <div className={`screen-layer screen-${state.mode}`} aria-live="polite">
             {state.mode === "idle" && (
               <div className="idle-screen">
-                <span className="idle-stripes" aria-hidden="true"><i /><i /><i /></span>
-                <p>PIXEL REPLAY</p>
-                <strong>INSERT YOUR SAVE</strong>
-                <small>点击或拖拽一张卡带开始播放</small>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/assets/screen-wallpaper.png"
+                  width={1672}
+                  height={941}
+                  alt="像素山海桌面壁纸"
+                />
+                <div className="idle-prompt">
+                  <span aria-hidden="true"><i /><i /><i /></span>
+                  <strong>PIXEL REPLAY</strong>
+                  <small>点击或拖拽一张卡带开始播放</small>
+                </div>
               </div>
             )}
             {state.mode === "off" && (

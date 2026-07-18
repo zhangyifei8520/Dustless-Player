@@ -143,6 +143,7 @@ export function GameConsole() {
           >
             <span>DROP HERE</span>
           </div>
+          <p className="slot-hint"><span>↑</span> 把卡带拖进插槽 · 或点击播放</p>
 
           <button
             className="console-control fullscreen-control"
@@ -169,7 +170,6 @@ export function GameConsole() {
             ))}
           </div>
         </div>
-        <p className="drag-hint"><span>↑</span> 把卡带拖进插槽 · 或点击播放</p>
       </section>
 
       {notice && <div className="pixel-toast" role="status">{notice}<span>…</span></div>}

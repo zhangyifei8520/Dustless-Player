@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "PoxiaoPixel";
+  src: url("/fonts/PoxiaoPixel.ttf") format("truetype");
+}
+
 :root {
   --ink: #171a31;
   --blue: #3348df;
@@ -35,7 +40,7 @@
 
 .site-header nav {
   display: flex;
-  gap: 30px;
+  gap: 16px;
 }
 
 .site-header nav button {
@@ -46,7 +51,8 @@
   border: 0;
   color: #fff;
   background: transparent;
-  font-size: 23px;
+  font-family: "PoxiaoPixel";
+  font-size: 12px;
   font-weight: 950;
   cursor: pointer;
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000,
@@ -62,9 +68,9 @@
 .nav-icon {
   position: relative;
   display: inline-grid;
-  width: 27px;
-  height: 27px;
-  flex: 0 0 27px;
+  width: 15px;
+  height: 15px;
+  flex: 0 0 15px;
   place-items: center;
   color: #fff;
   filter: drop-shadow(2px 0 0 #000) drop-shadow(-2px 0 0 #000)
@@ -283,7 +289,7 @@
   position: absolute;
   z-index: 8;
   display: grid;
-  width: 5.1%;
+  width: 5.8%;
   aspect-ratio: 1;
   height: auto;
   place-items: center;
@@ -295,8 +301,8 @@
 
 .console-control:hover,
 .console-control:focus-visible {
-  outline: 3px dashed #fff;
-  outline-offset: 3px;
+  outline: none;
+  box-shadow: 4px 4px 0 rgba(23, 26, 49, 0.5), inset 3px 3px 0 rgba(255, 255, 255, 0.5), inset 0 0 0 3px #fff;
   filter: brightness(1.1);
 }
 
@@ -309,10 +315,13 @@
   position: absolute;
   top: -21px;
   left: 50%;
+  color: #000;
+  font-family: "PoxiaoPixel";
   font-size: 9px;
   font-weight: 950;
   letter-spacing: 0.05em;
   white-space: nowrap;
+  text-shadow: none;
   transform: translateX(-50%);
 }
 
@@ -327,8 +336,8 @@
 
 .power-symbol {
   position: relative;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border: 4px solid #ff4c7e;
   border-top-color: transparent;
   border-radius: 50%;
@@ -357,8 +366,8 @@
 .expand-symbol {
   position: relative;
   display: block;
-  width: 29px;
-  height: 29px;
+  width: 22px;
+  height: 22px;
 }
 
 .expand-symbol i {
@@ -401,6 +410,20 @@
 }
 
 .slot-dropzone.is-reading span { color: #ff4d83; }
+
+.slot-hint {
+  position: absolute;
+  z-index: 7;
+  top: 63.4%;
+  left: 50%;
+  margin: 0;
+  color: #485a7d;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-align: center;
+  transform: translateX(-50%);
+}
 
 .card-rack {
   position: absolute;
@@ -583,9 +606,12 @@
   border-radius: 5px;
   background: #fff;
   box-shadow: 4px 4px 0 var(--ink);
+  color: #000;
+  font-family: "PoxiaoPixel";
   font-size: clamp(7px, 0.75vw, 10px);
   font-weight: 950;
   cursor: pointer;
+  text-shadow: none;
 }
 
 .cartridge-play:hover,

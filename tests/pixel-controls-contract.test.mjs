@@ -91,7 +91,7 @@ test("flat cartridge rack uses compact controls and black navigation", async () 
   assert.doesNotMatch(cartridge, /box-shadow:/);
 
   const cartridgeShadow = selectorRule(css, ".cartridge::after");
-  assert.match(cartridgeShadow, /z-index:\s*-1;/);
+  assert.match(cartridgeShadow, /z-index:\s*-2;/);
   assert.match(cartridgeShadow, /width:\s*100%;/);
   assert.match(cartridgeShadow, /height:\s*100%;/);
   assert.match(cartridgeShadow, /border-radius:\s*inherit;/);
@@ -106,6 +106,35 @@ test("flat cartridge rack uses compact controls and black navigation", async () 
   const navIcon = selectorRule(css, ".nav-icon");
   assert.match(navIcon, /color:\s*#000;/);
   assert.match(navIcon, /filter:\s*none;/);
+});
+
+test("cartridge shadow layers behind the unchanged card geometry and short label", async () => {
+  const [css, cartridgeData] = await Promise.all([
+    readFile(cssPath, "utf8"),
+    readFile(cartridgesPath, "utf8"),
+  ]);
+
+  const cartridge = selectorRule(css, ".cartridge");
+  assert.match(cartridge, /isolation:\s*isolate;/);
+  assert.doesNotMatch(cartridge, /background:\s*var\(--shell\)/);
+
+  const cardSurface = selectorRule(css, ".cartridge::before");
+  assert.match(cardSurface, /inset:\s*0;/);
+  assert.match(cardSurface, /z-index:\s*-1;/);
+  assert.match(cardSurface, /background:\s*var\(--shell\)/);
+
+  const shadow = selectorRule(css, ".cartridge::after");
+  assert.match(shadow, /top:\s*8px;/);
+  assert.match(shadow, /right:\s*-8px;/);
+  assert.match(shadow, /width:\s*100%;/);
+  assert.match(shadow, /height:\s*100%;/);
+  assert.match(shadow, /z-index:\s*-2;/);
+
+  const label = selectorRule(css, ".cartridge-label");
+  assert.match(label, /box-sizing:\s*border-box;/);
+  assert.match(label, /flex:\s*0 0 55%;/);
+  assert.match(selectorRule(css, ".cartridge-label p"), /-webkit-line-clamp:\s*1;/);
+  assert.doesNotMatch(cartridgeData, /。[^\n]*。/);
 });
 
 test("fullscreen video uses the calibrated viewport geometry", async () => {

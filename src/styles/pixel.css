@@ -49,14 +49,13 @@
   align-items: center;
   padding: 4px;
   border: 0;
-  color: #fff;
+  color: #000;
   background: transparent;
   font-family: "PoxiaoPixel";
   font-size: 12px;
   font-weight: 950;
   cursor: pointer;
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000,
-    -2px 2px 0 #000, 2px 2px 0 #000, 3px 0 0 #000, 0 3px 0 #000;
+  text-shadow: none;
 }
 
 .site-header nav button:hover,
@@ -72,9 +71,8 @@
   height: 15px;
   flex: 0 0 15px;
   place-items: center;
-  color: #fff;
-  filter: drop-shadow(2px 0 0 #000) drop-shadow(-2px 0 0 #000)
-    drop-shadow(0 2px 0 #000) drop-shadow(0 -2px 0 #000);
+  color: #000;
+  filter: none;
 }
 
 .nav-home::before,
@@ -429,17 +427,18 @@
   position: absolute;
   z-index: 6;
   right: 14%;
-  bottom: 5%;
+  bottom: 0;
   left: 14%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6%;
-  height: 21%;
+  gap: 8%;
+  height: 29%;
   align-items: end;
 }
 
 .cartridge {
   position: relative;
+  z-index: 0;
   display: flex;
   min-width: 0;
   height: 100%;
@@ -448,36 +447,33 @@
   border: 3px solid var(--ink);
   border-radius: 14px 14px 12px 12px;
   background: var(--shell);
-  box-shadow: 8px 8px 0 var(--ink);
   cursor: grab;
   touch-action: manipulation;
-  transition: filter 120ms steps(2, end), box-shadow 120ms steps(2, end),
-    transform 140ms steps(3, end);
+  transition: filter 120ms steps(2, end), transform 140ms steps(3, end);
   user-select: none;
 }
 
 .cartridge::after {
   position: absolute;
-  top: 6px;
-  right: -7px;
-  width: 7px;
-  height: calc(100% - 8px);
-  background: var(--shade);
-  border: 2px solid var(--ink);
-  border-left: 0;
+  z-index: -1;
+  top: 8px;
+  right: -8px;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: #000;
   content: "";
 }
 
-.cartridge-green { --shell: var(--green); --shade: #3c916b; }
-.cartridge-blue { --shell: var(--card-blue); --shade: #3f55b7; }
-.cartridge-pink { --shell: var(--pink); --shade: #b84573; }
+.cartridge-green { --shell: var(--green); }
+.cartridge-blue { --shell: var(--card-blue); }
+.cartridge-pink { --shell: var(--pink); }
 
 .cartridge:hover,
 .cartridge:focus-within {
   z-index: 20;
   filter: brightness(1.05) saturate(1.08);
   outline: none;
-  box-shadow: 10px 16px 0 var(--ink);
   transform: translateY(-9px);
 }
 
@@ -485,7 +481,6 @@
   z-index: 60;
   cursor: grabbing;
   filter: brightness(1.1);
-  box-shadow: 14px 18px 0 rgba(23, 26, 49, 0.65);
   transition: none;
 }
 
@@ -535,7 +530,7 @@
 }
 
 .cartridge-source span {
-  color: var(--shade);
+  color: var(--shell);
   font-size: clamp(10px, 1.15vw, 16px);
   font-weight: 950;
   text-shadow: 1px 1px 0 var(--ink);
@@ -565,11 +560,11 @@
 
 .cartridge-play {
   position: absolute;
-  right: 3%;
-  bottom: -24px;
-  left: 3%;
+  right: 8%;
+  bottom: -9px;
+  left: 8%;
   display: flex;
-  height: clamp(36px, 5.5vw, 52px);
+  height: clamp(30px, 3.8vw, 38px);
   align-items: center;
   justify-content: center;
   gap: 7px;

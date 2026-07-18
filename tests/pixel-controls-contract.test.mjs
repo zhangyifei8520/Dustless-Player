@@ -32,7 +32,8 @@ test("pixel controls use the calibrated font, focus, and slot contract", async (
 
   const navButton = selectorRule(css, ".site-header nav button");
   assert.match(navButton, /font-family:\s*["']PoxiaoPixel["']/);
-  assert.match(navButton, /text-shadow:[^;]*#000/);
+  assert.match(navButton, /color:\s*#000;/);
+  assert.match(navButton, /text-shadow:\s*none;/);
 
   const controlInteraction = selectorRule(css, ".console-control:hover,\n.console-control:focus-visible");
   assert.doesNotMatch(controlInteraction, /dashed/);
@@ -76,18 +77,39 @@ test("cartridge cards only show source, title, and summary", async () => {
   assert.doesNotMatch(cartridgeData, /date:/);
 });
 
-test("cartridge groups and fullscreen video use the calibrated viewport geometry", async () => {
+test("flat cartridge rack uses compact controls and black navigation", async () => {
   const css = await readFile(cssPath, "utf8");
 
   const cardRack = selectorRule(css, ".card-rack");
   assert.match(cardRack, /left:\s*14%;/);
   assert.match(cardRack, /right:\s*14%;/);
-  assert.match(cardRack, /height:\s*21%;/);
+  assert.match(cardRack, /height:\s*29%;/);
+  assert.match(cardRack, /bottom:\s*0;/);
+  assert.match(cardRack, /gap:\s*8%;/);
+
+  const cartridge = selectorRule(css, ".cartridge");
+  assert.doesNotMatch(cartridge, /box-shadow:/);
+
+  const cartridgeShadow = selectorRule(css, ".cartridge::after");
+  assert.match(cartridgeShadow, /z-index:\s*-1;/);
+  assert.match(cartridgeShadow, /width:\s*100%;/);
+  assert.match(cartridgeShadow, /height:\s*100%;/);
+  assert.match(cartridgeShadow, /border-radius:\s*inherit;/);
+  assert.match(cartridgeShadow, /background:\s*#000;/);
 
   const cartridgePlay = selectorRule(css, ".cartridge-play");
-  assert.match(cartridgePlay, /left:\s*3%;/);
-  assert.match(cartridgePlay, /right:\s*3%;/);
-  assert.match(cartridgePlay, /height:\s*clamp\(36px,\s*5\.5vw,\s*52px\);/);
+  assert.match(cartridgePlay, /left:\s*8%;/);
+  assert.match(cartridgePlay, /right:\s*8%;/);
+  assert.match(cartridgePlay, /bottom:\s*-9px;/);
+  assert.match(cartridgePlay, /height:\s*clamp\(30px,\s*3\.8vw,\s*38px\);/);
+
+  const navIcon = selectorRule(css, ".nav-icon");
+  assert.match(navIcon, /color:\s*#000;/);
+  assert.match(navIcon, /filter:\s*none;/);
+});
+
+test("fullscreen video uses the calibrated viewport geometry", async () => {
+  const css = await readFile(cssPath, "utf8");
 
   const fullscreenFrame = selectorRule(css, ".fullscreen-frame");
   assert.match(fullscreenFrame, /width:[^;]*92vw/);

@@ -12,6 +12,14 @@ function selectorRule(css, selector) {
   return match[1];
 }
 
+function lastSelectorRule(css, selector) {
+  const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const matches = [...css.matchAll(new RegExp(`${escapedSelector}\\s*\\{([^}]*)\\}`, "gs"))];
+  const match = matches.at(-1);
+  assert.ok(match, `missing ${selector} rule`);
+  return match[1];
+}
+
 test("pixel controls use the calibrated font, focus, and slot contract", async () => {
   const [css, consoleSource] = await Promise.all([
     readFile(cssPath, "utf8"),
@@ -33,4 +41,15 @@ test("pixel controls use the calibrated font, focus, and slot contract", async (
 
   assert.match(consoleSource, /className="slot-hint"/);
   assert.doesNotMatch(consoleSource, /className="drag-hint"/);
+});
+
+test("navigation artwork and fullscreen label use the calibrated color geometry", async () => {
+  const css = await readFile(cssPath, "utf8");
+
+  assert.match(selectorRule(css, ".nav-home::before"), /width:\s*15px;[\s\S]*height:\s*8px;/);
+  assert.match(selectorRule(css, ".nav-home::after"), /width:\s*10px;[\s\S]*height:\s*8px;/);
+  assert.match(selectorRule(css, ".nav-library::before"), /width:\s*3px;[\s\S]*height:\s*13px;[\s\S]*box-shadow:\s*6px 0 0 currentcolor, 12px 0 0 currentcolor;/);
+  assert.match(lastSelectorRule(css, ".nav-library::after"), /height:\s*3px;/);
+  assert.match(selectorRule(css, ".nav-about"), /font-size:\s*15px;/);
+  assert.match(selectorRule(css, ".fullscreen-control small"), /color:\s*#171a31;/);
 });

@@ -43,3 +43,27 @@ Result: passed. The visual-contract test passed; ESLint completed with no errors
 ## Implementation commit
 
 `bf984d580c5df60af21ba210654892966b99ce7c` — `feat: calibrate pixel controls and font`
+
+## Review follow-up: navigation artwork and fullscreen label
+
+### RED evidence
+
+After extending `tests/pixel-controls-contract.test.mjs` with the review requirements, the focused command was run before CSS production changes:
+
+```sh
+node --test tests/pixel-controls-contract.test.mjs
+```
+
+Result: failed as expected (1 passing test, 1 failing test). The new test failed on `.nav-home::before`, reporting the existing `width: 25px; height: 13px;` rather than the calibrated `15px × 8px` geometry. This established the reported oversized navigation artwork defect before the CSS change.
+
+### GREEN evidence
+
+The navigation icons were retained and their internal home/library pseudo-element geometry was scaled to fit the existing 15px icon container; `.nav-about` was set to 15px. Their existing white `currentcolor` fill and black drop-shadow outline were preserved. `.fullscreen-control small` now explicitly uses `color: #171a31`.
+
+The selector test helper was corrected after the first post-change run because the repeated `.nav-library::after` selector initially matched its shared base rule instead of its dedicated geometry rule. The focused contract was then rerun with the required complete verification command:
+
+```sh
+node --test tests/pixel-controls-contract.test.mjs && npm run lint && npm test
+```
+
+Result: passed. The focused contract passed 2 tests; ESLint completed with no errors; `npm test` passed 11 unit tests, completed the production build, and passed the rendered HTML test. The build emitted only the pre-existing proxy-variable and Vinext static-route-classification warnings.

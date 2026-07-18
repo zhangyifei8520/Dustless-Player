@@ -208,13 +208,6 @@
   letter-spacing: 0.1em;
 }
 
-.idle-screen strong {
-  margin-top: 18px;
-  color: var(--blue);
-  font-size: clamp(9px, 1.2vw, 14px);
-  letter-spacing: 0.16em;
-}
-
 .idle-screen small {
   margin-top: 9px;
   padding: 5px 8px;
@@ -457,7 +450,7 @@
 .cartridge-pink { --shell: var(--pink); --shade: #b84573; }
 
 .cartridge:hover,
-.cartridge:focus-visible {
+.cartridge:focus-within {
   z-index: 20;
   filter: brightness(1.05) saturate(1.08);
   outline: none;
@@ -475,6 +468,12 @@
 
 .cartridge.is-active {
   animation: card-active 0.9s steps(2, end) infinite;
+}
+
+.cartridge.is-active:hover,
+.cartridge.is-active:focus-within {
+  animation: none;
+  transform: translateY(-9px);
 }
 
 .cartridge-head {
@@ -593,8 +592,11 @@
 .cartridge-play:focus-visible {
   color: #fff;
   background: var(--blue);
-  outline: 2px dashed #fff;
-  outline-offset: -5px;
+}
+
+.cartridge-play:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
 }
 
 .cartridge-play:disabled { cursor: wait; opacity: 0.55; }

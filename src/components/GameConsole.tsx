@@ -2,7 +2,11 @@
 
 import { useEffect, useReducer, useRef, useState } from "react";
 import { cartridges, type Cartridge } from "../data/cartridges";
-import { initialPlayerState, playerReducer } from "../lib/playerMachine";
+import {
+  getPlayerMounts,
+  initialPlayerState,
+  playerReducer,
+} from "../lib/playerMachine";
 import { CartridgeCard } from "./CartridgeCard";
 import { SimulatedPlayer } from "./SimulatedPlayer";
 
@@ -11,6 +15,7 @@ export function GameConsole() {
   const [notice, setNotice] = useState<string | null>(null);
   const slotRef = useRef<HTMLDivElement>(null);
   const active = cartridges.find((card) => card.id === state.activeCartridgeId) ?? null;
+  const playerMounts = getPlayerMounts(state);
 
   useEffect(() => {
     if (state.mode !== "loading") return;
@@ -108,7 +113,7 @@ export function GameConsole() {
                 <small>{active?.code} / 请稍候</small>
               </div>
             )}
-            {state.mode === "playing" && active && <SimulatedPlayer cartridge={active} />}
+            {playerMounts.inline && active && <SimulatedPlayer cartridge={active} />}
           </div>
 
           <button
@@ -169,7 +174,7 @@ export function GameConsole() {
 
       {notice && <div className="pixel-toast" role="status">{notice}<span>…</span></div>}
 
-      {state.fullscreen && active && (
+      {playerMounts.fullscreen && active && (
         <div className="fullscreen-overlay" role="dialog" aria-modal="true" aria-label={`${active.title} 全屏播放`}>
           <button
             className="fullscreen-close"

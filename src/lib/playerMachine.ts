@@ -22,6 +22,17 @@ export const initialPlayerState: PlayerState = {
   fullscreen: false,
 };
 
+export function getPlayerMounts(
+  state: Pick<PlayerState, "mode" | "fullscreen">,
+) {
+  const playing = state.mode === "playing";
+
+  return {
+    inline: playing && !state.fullscreen,
+    fullscreen: playing && state.fullscreen,
+  };
+}
+
 const offState: PlayerState = {
   mode: "off",
   activeCartridgeId: null,

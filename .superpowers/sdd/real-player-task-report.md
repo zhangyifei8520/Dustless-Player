@@ -54,6 +54,61 @@ Production build: passed
 Rendered HTML test: 1 passed, 0 failed
 ```
 
+## Final review fix: single mounted player
+
+### Root cause
+
+The inline screen rendered whenever `mode === "playing"`, while the fullscreen overlay rendered independently whenever `fullscreen` was true. Both conditions were true in fullscreen mode, so two autoplay players mounted simultaneously.
+
+### RED
+
+Added `tests/player-mounts.test.ts` before production changes and ran:
+
+```text
+node --import tsx --test tests/player-mounts.test.ts
+```
+
+Observed the expected missing-behavior failure:
+
+```text
+SyntaxError: '../src/lib/playerMachine' does not provide an export named 'getPlayerMounts'
+tests 1
+pass 0
+fail 1
+```
+
+### GREEN
+
+Added a pure mutually exclusive mount selector and used it for both player locations in `GameConsole`.
+
+Focused result:
+
+```text
+tests 3
+pass 3
+fail 0
+```
+
+Final non-browser verification:
+
+```text
+node --import tsx --test tests/player-mounts.test.ts
+npm run test:unit
+npm run lint
+npm run build
+node --test tests/rendered-html.test.mjs
+```
+
+Results:
+
+```text
+Unit/static tests: 11 passed, 0 failed
+ESLint: passed
+Production build: passed
+Rendered HTML test: 1 passed, 0 failed
+Browser QA: not run, as requested
+```
+
 ## Browser QA at 1440×900
 
 - `LS-02` rendered `https://player.bilibili.com/player.html?bvid=BV1wL9sYEE8t&autoplay=1&danmaku=0&refer=1`.

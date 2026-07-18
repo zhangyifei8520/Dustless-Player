@@ -12,7 +12,7 @@
 
 - Preserve drag/drop, loading, inline player, and fullscreen behavior.
 - Do not change console assets, screen geometry, or control placement.
-- Content shows only source abbreviation/category, title, and a two-to-three-line summary; do not show status or date.
+- Content shows only source abbreviation, title, and a two-to-three-line summary; do not show category, status, or date.
 - Use flat green, blue, and pink rounded shells with a separate pure-black rounded backing shadow.
 - Keep cards centred, slightly raised in the purple cabinet, with a play strip that only slightly exceeds the cabinet bottom.
 - Navigation labels and icons must be pure black with no text shadow or filter outline.
@@ -31,21 +31,21 @@
 **Interfaces:**
 
 - Consumes: `CartridgeCardProps`, `Cartridge`, and existing cartridge class names.
-- Produces: cards with a top notch/code plus cream content panel, but no footer metadata or unused `status`/`date` fields.
+- Produces: cards with a top notch/code plus cream content panel, but no category, footer metadata, or unused `status`/`date` fields.
 
 - [ ] **Step 1: Write the failing component contract**
 
-  Add a `cartridge card content contract` test to `tests/pixel-controls-contract.test.mjs`. Read `CartridgeCard.tsx` and `cartridges.ts`; assert the source reads `cartridge-source`, `cartridge-label h3`, and `cartridge-label p`, and does not contain `cartridge-foot`, `status-`, `cartridge.status`, `cartridge.date`, `status:`, or `date:`.
+  Add a `cartridge card content contract` test to `tests/pixel-controls-contract.test.mjs`. Read `CartridgeCard.tsx` and `cartridges.ts`; assert the source reads `cartridge-source`, `cartridge-label h3`, and `cartridge-label p`, and does not contain `cartridge-source small`, `cartridge.category`, `category:`, `cartridge-foot`, `status-`, `cartridge.status`, `cartridge.date`, `status:`, or `date:`.
 
 - [ ] **Step 2: Verify RED**
 
   Run `node --test tests/pixel-controls-contract.test.mjs`.
 
-  Expected: FAIL because the card still renders `.cartridge-foot` and the data still declares `status` and `date`.
+  Expected: FAIL because the card still renders a category label and `.cartridge-foot`, while the data still declares `category`, `status`, and `date`.
 
 - [ ] **Step 3: Remove metadata from data and markup**
 
-  Remove `status: "sealed" | "ready" | "playing";` and `date: string;` from `Cartridge`, and remove every corresponding record property. Delete this JSX footer from `CartridgeCard.tsx`:
+  Remove `category: string;`, `status: "sealed" | "ready" | "playing";`, and `date: string;` from `Cartridge`, and remove every corresponding record property. Delete `<small>{cartridge.category}</small>` from `.cartridge-source`, then delete this JSX footer from `CartridgeCard.tsx`:
 
   ```tsx
   <footer className="cartridge-foot">
@@ -56,11 +56,11 @@
   </footer>
   ```
 
-  Preserve source abbreviation/category, title, summary, code, notch, and play button.
+  Preserve only source abbreviation, title, summary, code, notch, and play button.
 
 - [ ] **Step 4: Remove orphaned CSS**
 
-  Delete `.cartridge-foot`, `.status`, `.status-playing`, and `.status-ready` rules. Keep `.cartridge-label p` with `-webkit-line-clamp: 3`.
+  Delete `.cartridge-source small`, `.cartridge-foot`, `.status`, `.status-playing`, and `.status-ready` rules. Keep `.cartridge-label p` with `-webkit-line-clamp: 3`.
 
 - [ ] **Step 5: Verify GREEN and commit**
 
@@ -144,6 +144,6 @@
 
 ## Plan self-review
 
-- Task 1 covers removal of status/date and preserves the confirmed information hierarchy.
+- Task 1 covers removal of category/status/date and preserves the confirmed information hierarchy.
 - Task 2 covers flat colour shells, independent black shadows, raised and spaced rack geometry, compact play strips, and black unoutlined navigation.
 - No placeholders remain; selectors, values, test commands, and expected outcomes are explicit.

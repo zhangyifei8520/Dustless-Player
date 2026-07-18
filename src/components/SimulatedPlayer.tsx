@@ -19,7 +19,7 @@ export function SimulatedPlayer({
           className="sim-player-embed"
           src={target.src}
           title={`${cartridge.title} - Bilibili 播放器`}
-          allow="autoplay; fullscreen; picture-in-picture"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
           allowFullScreen
         />
       ) : (

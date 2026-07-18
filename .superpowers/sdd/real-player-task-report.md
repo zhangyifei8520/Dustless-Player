@@ -71,3 +71,53 @@ Rendered HTML test: 1 passed, 0 failed
 - `tests/playback-target.test.ts`
 - `tests/rendered-html.test.mjs`
 - `.superpowers/sdd/real-player-task-report.md`
+
+## Reviewer fix: encrypted media permission
+
+### RED
+
+Added `tests/player-markup.test.ts` to statically render the Bilibili player and require this exact iframe permission string:
+
+```text
+autoplay; encrypted-media; picture-in-picture; fullscreen
+```
+
+Command:
+
+```text
+node --import tsx --test tests/player-markup.test.ts
+```
+
+Observed expected failure because the rendered iframe still contained:
+
+```text
+allow="autoplay; fullscreen; picture-in-picture"
+tests 1
+pass 0
+fail 1
+```
+
+### GREEN
+
+After changing only the iframe `allow` attribute, the focused test passed:
+
+```text
+tests 1
+pass 1
+fail 0
+```
+
+Final command:
+
+```text
+npm run lint && npm test
+```
+
+Final result:
+
+```text
+ESLint: passed
+Unit tests: 8 passed, 0 failed
+Production build: passed
+Rendered HTML test: 1 passed, 0 failed
+```

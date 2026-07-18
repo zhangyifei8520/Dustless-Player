@@ -67,3 +67,25 @@ node --test tests/pixel-controls-contract.test.mjs && npm run lint && npm test
 ```
 
 Result: passed. The focused contract passed 2 tests; ESLint completed with no errors; `npm test` passed 11 unit tests, completed the production build, and passed the rendered HTML test. The build emitted only the pre-existing proxy-variable and Vinext static-route-classification warnings.
+
+## Review follow-up: literal fullscreen label black
+
+### RED evidence
+
+The fullscreen-label contract was changed to require literal pure black before the production CSS declaration was modified:
+
+```sh
+node --test tests/pixel-controls-contract.test.mjs
+```
+
+Result: failed as expected (1 passing test, 1 failing test). The failure reported `.fullscreen-control small` as `color: #171a31;`, which did not satisfy the required `color: #000;` assertion.
+
+### GREEN evidence
+
+Changed only `.fullscreen-control small` to `color: #000;`, then ran:
+
+```sh
+node --test tests/pixel-controls-contract.test.mjs && npm run lint && npm test
+```
+
+Result: passed. The focused contract passed 2 tests; ESLint completed with no errors; `npm test` passed 11 unit tests, completed the production build, and passed the rendered HTML test. The build emitted only the existing proxy-variable and Vinext static-route-classification warnings.

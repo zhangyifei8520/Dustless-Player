@@ -361,7 +361,7 @@
   background: linear-gradient(180deg, #475bf4 0%, #2336d6 78%, #16228c 79%);
 }
 
-.fullscreen-control small { color: #171a31; }
+.fullscreen-control small { color: #000; }
 
 .expand-symbol {
   position: relative;

@@ -51,5 +51,5 @@ test("navigation artwork and fullscreen label use the calibrated color geometry"
   assert.match(selectorRule(css, ".nav-library::before"), /width:\s*3px;[\s\S]*height:\s*13px;[\s\S]*box-shadow:\s*6px 0 0 currentcolor, 12px 0 0 currentcolor;/);
   assert.match(lastSelectorRule(css, ".nav-library::after"), /height:\s*3px;/);
   assert.match(selectorRule(css, ".nav-about"), /font-size:\s*15px;/);
-  assert.match(selectorRule(css, ".fullscreen-control small"), /color:\s*#171a31;/);
+  assert.match(selectorRule(css, ".fullscreen-control small"), /color:\s*#000;/);
 });

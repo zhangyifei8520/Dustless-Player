@@ -794,14 +794,14 @@
 
 .right-decor { position: absolute; top: 27%; right: clamp(28px, calc(50% - 650px), 18vw); width: 250px; }
 .decor-star { position: absolute; top: -12px; left: 5px; color: #ff699d; font-size: 28px; }
-.lets-play { position: relative; width: 142px; margin-left: 30px; padding: 12px 14px; border: 3px solid var(--ink); background: #fffdf5; box-shadow: 3px 3px 0 var(--ink); font-family: "ChillPixelsMono"; font-size: 21.6px; line-height: 1.05; transform: rotate(5deg); }
+.lets-play { position: relative; width: 109px; margin-left: 30px; padding: 12px 14px; border: 3px solid var(--ink); background: #fffdf5; box-shadow: 3px 3px 0 var(--ink); font-family: "ChillPixelsMono"; font-size: 21.6px; line-height: 1.05; transform: rotate(5deg); }
 .right-smile {
   position: absolute;
   z-index: 2;
   top: 42px;
-  left: 164px;
+  left: 151px;
   width: 42px;
-  transform: rotate(30deg);
+  transform: rotate(-6deg);
   transform-origin: center;
 }
 .decor-info-card { position: relative; min-height: 150px; margin-top: 46px; padding: 28px 20px 16px; border: 2px dashed #5366f4; border-radius: 12px; color: var(--ink); }

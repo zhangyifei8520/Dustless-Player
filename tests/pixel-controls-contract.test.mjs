@@ -201,7 +201,9 @@ test("side decorations use the supplied vector pixel smile", async () => {
   assert.match(selectorRule(css, ".decor-smile"), /height:\s*auto;/);
   assert.match(selectorRule(css, ".right-smile"), /width:\s*42px;/);
   assert.match(selectorRule(css, ".right-smile"), /z-index:\s*2;/);
-  assert.match(selectorRule(css, ".right-smile"), /transform:\s*rotate\(30deg\);/);
+  assert.match(selectorRule(css, ".right-smile"), /left:\s*151px;/);
+  assert.match(selectorRule(css, ".right-smile"), /transform:\s*rotate\(-6deg\);/);
+  assert.match(selectorRule(css, ".lets-play"), /width:\s*109px;/);
   assert.match(selectorRule(css, ".lets-play"), /font-family:\s*"ChillPixelsMono";/);
   assert.doesNotMatch(css, /\.decor-smile::before/);
 });

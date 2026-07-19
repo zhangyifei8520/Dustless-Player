@@ -57,10 +57,6 @@ export function GameConsole() {
 
   return (
     <>
-      <div className="brand-lockup" aria-label="不吃灰 · 播放器">
-        <span className="brand-handheld" aria-hidden="true"><i /></span>
-        <strong>不吃灰 · 播放器</strong>
-      </div>
       <header className="site-header">
         <nav aria-label="主导航">
           <button type="button" onClick={() => showNavNotice("首页")}>
@@ -81,7 +77,7 @@ export function GameConsole() {
       <aside className="left-decor" aria-label="卡带拖拽说明">
         <span className="decor-smile" aria-hidden="true">●</span>
         <p>Ready to play?</p>
-        <h1>Favorites<br />Game Player</h1>
+        <h1>不吃灰播放器<br /><span>DUSTLESS PLAYER</span></h1>
         <i className="decor-underline" aria-hidden="true" />
         <small>Drag your favorite game cartridge into the slot and let&apos;s play!</small>
         <b aria-hidden="true">»»</b>
@@ -122,7 +118,13 @@ export function GameConsole() {
                   alt="像素山海桌面壁纸"
                 />
                 <div className="idle-prompt">
-                  <span aria-hidden="true"><i /><i /><i /></span>
+                  <div className="boot-title" aria-label="DUSTLESS PLAYER">
+                    {"DUSTLESS PLAYER".split("").map((letter, index) => (
+                      <span key={`${letter}-${index}`} aria-hidden="true">
+                        {letter === " " ? "\u00a0" : letter}
+                      </span>
+                    ))}
+                  </div>
                   <small>点击或拖拽一张卡带开始播放</small>
                 </div>
               </div>
@@ -186,11 +188,11 @@ export function GameConsole() {
           <button
             className="random-recommendation"
             type="button"
-            aria-label="随机推荐"
+            aria-label="随机"
             onClick={() => setNotice("随机推荐功能准备中")}
           >
             <span aria-hidden="true">↻</span>
-            随机推荐
+            随机
           </button>
 
           <div className="card-rack" aria-label="每日推荐卡带">

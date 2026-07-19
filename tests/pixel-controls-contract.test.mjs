@@ -81,14 +81,12 @@ test("console exposes the approved identity, decor copy, random placeholder, and
   const consoleSource = await readFile(consolePath, "utf8");
 
   for (const copy of [
-    "不吃灰 · 播放器",
+    "不吃灰播放器",
+    "DUSTLESS PLAYER",
     "Ready to play?",
-    "Favorites",
-    "Game Player",
     "COLLECT GAMES",
     "UNLOCK MEMORIES",
     "PLAY FOREVER",
-    "随机推荐",
     "随机推荐功能准备中",
     "把卡带拖进插槽",
   ]) assert.match(consoleSource, new RegExp(copy.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
@@ -97,7 +95,11 @@ test("console exposes the approved identity, decor copy, random placeholder, and
   assert.match(consoleSource, /LET(?:'|&apos;)S<br \/>PLAY!/);
 
   assert.doesNotMatch(consoleSource, /把卡带拖进插槽 · 或点击播放/);
-  assert.match(consoleSource, /className="brand-lockup"/);
+  assert.doesNotMatch(consoleSource, /className="brand-lockup"/);
+  assert.match(consoleSource, /className="boot-title"/);
+  assert.match(consoleSource, /aria-label="随机"/);
+  assert.match(consoleSource, />\s*随机\s*<\/button>/);
+  assert.doesNotMatch(consoleSource, />\s*随机推荐\s*<\/button>/);
   assert.match(consoleSource, /className="left-decor"/);
   assert.match(consoleSource, /className="right-decor"/);
   assert.match(consoleSource, /className="random-recommendation"/);
@@ -142,12 +144,12 @@ test("console decor uses approved card, control, random-button, and accent geome
   assert.match(rack, /gap:\s*6\.86%;/);
   assert.match(selectorRule(css, ".power-control"), /top:\s*56\.5%;/);
   assert.match(selectorRule(css, ".fullscreen-control"), /top:\s*56\.5%;/);
-  assert.match(selectorRule(css, ".random-recommendation"), /top:\s*66%;/);
-  assert.match(selectorRule(css, ".random-recommendation"), /right:\s*-3%;/);
-  assert.match(selectorRule(css, ".random-recommendation"), /min-width:\s*96px;/);
+  assert.match(selectorRule(css, ".random-recommendation"), /top:\s*64%;/);
+  assert.match(selectorRule(css, ".random-recommendation"), /right:\s*1%;/);
+  assert.match(selectorRule(css, ".random-recommendation"), /min-width:\s*66px;/);
   assert.match(selectorRule(css, ".random-recommendation"), /min-height:\s*31px;/);
   assert.match(selectorRule(css, ".random-recommendation"), /background:[^;]*#475bf4/);
-  for (const selector of [".brand-lockup", ".left-decor", ".right-decor"]) {
+  for (const selector of [".left-decor", ".right-decor"]) {
     assert.match(selectorRule(css, selector), /position:\s*absolute;/);
   }
   assert.match(selectorRule(css, ".slot-hint"), /text-align:\s*center;/);
@@ -157,12 +159,24 @@ test("console decor uses approved card, control, random-button, and accent geome
 test("side decorations use the enlarged desktop type scale", async () => {
   const css = await readFile(cssPath, "utf8");
 
-  assert.match(selectorRule(css, ".left-decor"), /width:\s*200px;/);
-  assert.match(selectorRule(css, ".left-decor h1"), /font-size:\s*29px;/);
-  assert.match(selectorRule(css, ".left-decor small"), /font-size:\s*9px;/);
-  assert.match(selectorRule(css, ".right-decor"), /width:\s*198px;/);
-  assert.match(selectorRule(css, ".lets-play"), /font-size:\s*20px;/);
-  assert.match(selectorRule(css, ".decor-info-card p"), /font-size:\s*9px;/);
+  assert.match(selectorRule(css, ".left-decor"), /width:\s*300px;/);
+  assert.match(selectorRule(css, ".left-decor p"), /font-size:\s*20px;/);
+  assert.match(selectorRule(css, ".left-decor h1"), /font-size:\s*44px;/);
+  assert.match(selectorRule(css, ".left-decor small"), /font-size:\s*18px;/);
+  assert.match(selectorRule(css, ".right-decor"), /width:\s*250px;/);
+  assert.match(selectorRule(css, ".lets-play"), /font-size:\s*30px;/);
+  assert.match(selectorRule(css, ".decor-info-card p"), /font-size:\s*18px;/);
+});
+
+test("idle screen uses the supplied rainbow boot-title treatment", async () => {
+  const css = await readFile(cssPath, "utf8");
+
+  assert.match(css, /font-family:\s*["']ChillPixelsMinimalism["'][^}]*src:\s*url\(["']\/fonts\/ChillPixels-Minimalism\.otf["']\)/s);
+  assert.match(selectorRule(css, ".boot-title"), /font-family:\s*["']ChillPixelsMinimalism["']/);
+  assert.match(selectorRule(css, ".boot-title span:nth-child(odd)"), /translateY\(-6px\)/);
+  assert.match(selectorRule(css, ".boot-title span:nth-child(even)"), /translateY\(6px\)/);
+  assert.match(selectorRule(css, ".idle-screen small"), /background:\s*transparent;/);
+  assert.match(selectorRule(css, ".idle-screen small"), /font-size:\s*clamp\(6\.4px,\s*\.8vw,\s*9\.6px\);/);
 });
 
 test("cartridge shadow layers behind the unchanged card geometry and short label", async () => {

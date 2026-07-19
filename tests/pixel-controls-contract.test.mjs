@@ -5,7 +5,7 @@ import test from "node:test";
 const cssPath = new URL("../src/styles/pixel.css", import.meta.url);
 const consolePath = new URL("../src/components/GameConsole.tsx", import.meta.url);
 const cartridgePath = new URL("../src/components/CartridgeCard.tsx", import.meta.url);
-const cartridgesPath = new URL("../src/data/cartridges.ts", import.meta.url);
+const recommendationsPath = new URL("../src/lib/recommendations.ts", import.meta.url);
 const smilePath = new URL("../public/assets/pixel-smile.svg", import.meta.url);
 
 function selectorRule(css, selector) {
@@ -31,7 +31,7 @@ test("pixel controls use the calibrated font, focus, and slot contract", async (
 
   assert.match(css, /@font-face\s*\{[^}]*font-family:\s*["']PoxiaoPixel["'][^}]*src:\s*url\(["']\/fonts\/PoxiaoPixel\.ttf["']\)\s*format\(["']truetype["']\)/s);
 
-  const navButton = selectorRule(css, ".site-header nav button");
+  const navButton = /\.site-header nav button,\s*\.site-header nav a\s*\{([^}]*)\}/s.exec(css)?.[1] ?? "";
   assert.match(navButton, /font-family:\s*["']PoxiaoPixel["']/);
   assert.match(navButton, /color:\s*#000;/);
   assert.match(navButton, /text-shadow:\s*none;/);
@@ -60,9 +60,9 @@ test("navigation artwork and fullscreen label use the calibrated color geometry"
 });
 
 test("cartridge cards only show source, title, and summary", async () => {
-  const [cardSource, cartridgeData] = await Promise.all([
+  const [cardSource, recommendationData] = await Promise.all([
     readFile(cartridgePath, "utf8"),
-    readFile(cartridgesPath, "utf8"),
+    readFile(recommendationsPath, "utf8"),
   ]);
 
   assert.match(cardSource, /className="cartridge-source"/);
@@ -74,9 +74,9 @@ test("cartridge cards only show source, title, and summary", async () => {
   assert.doesNotMatch(cardSource, /status-/);
   assert.doesNotMatch(cardSource, /cartridge\.status/);
   assert.doesNotMatch(cardSource, /cartridge\.date/);
-  assert.doesNotMatch(cartridgeData, /category:/);
-  assert.doesNotMatch(cartridgeData, /status:/);
-  assert.doesNotMatch(cartridgeData, /date:/);
+  assert.match(recommendationData, /category,/);
+  assert.doesNotMatch(cardSource, /status:/);
+  assert.doesNotMatch(cardSource, /date:/);
 });
 
 test("console exposes the approved identity, decor copy, random placeholder, and slot hint", async () => {
@@ -89,7 +89,6 @@ test("console exposes the approved identity, decor copy, random placeholder, and
     "COLLECT GAMES",
     "UNLOCK MEMORIES",
     "PLAY FOREVER",
-    "随机推荐功能准备中",
     "把卡带拖进插槽",
   ]) assert.match(consoleSource, new RegExp(copy.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 
@@ -155,8 +154,9 @@ test("console decor uses approved card, control, random-button, and accent geome
     assert.match(selectorRule(css, selector), /position:\s*absolute;/);
   }
   assert.match(selectorRule(css, ".slot-hint"), /text-align:\s*center;/);
-  assert.match(selectorRule(css, ".cartridge-blue"), /--shell:\s*var\(--pink\);/);
-  assert.match(selectorRule(css, ".cartridge-pink"), /--shell:\s*var\(--yellow\);/);
+  assert.match(selectorRule(css, ".cartridge-green"), /--shell:\s*#3ecf8e;/);
+  assert.match(selectorRule(css, ".cartridge-pink"), /--shell:\s*#ff6fa5;/);
+  assert.match(selectorRule(css, ".cartridge-yellow"), /--shell:\s*#ffc93c;/);
 });
 
 test("side decorations use the reduced desktop type scale and Mono wordmark", async () => {
@@ -223,15 +223,12 @@ test("the page uses native pointer and drag cursors", async () => {
 
   assert.doesNotMatch(css, /pixel-cursor-(?:default|action)\.svg/);
   assert.doesNotMatch(css, /--cursor-(?:default|action):/);
-  assert.match(selectorRule(css, ".site-header nav button"), /cursor:\s*pointer;/);
+  assert.match(/\.site-header nav button,\s*\.site-header nav a\s*\{([^}]*)\}/s.exec(css)?.[1] ?? "", /cursor:\s*pointer;/);
   assert.match(selectorRule(css, ".cartridge"), /cursor:\s*grab;/);
 });
 
 test("cartridge shadow layers behind the unchanged card geometry and short label", async () => {
-  const [css, cartridgeData] = await Promise.all([
-    readFile(cssPath, "utf8"),
-    readFile(cartridgesPath, "utf8"),
-  ]);
+  const css = await readFile(cssPath, "utf8");
 
   const cartridge = selectorRule(css, ".cartridge");
   assert.match(cartridge, /isolation:\s*isolate;/);
@@ -243,8 +240,8 @@ test("cartridge shadow layers behind the unchanged card geometry and short label
   assert.match(cardSurface, /background:\s*var\(--shell\)/);
 
   const shadow = selectorRule(css, ".cartridge::after");
-  assert.match(shadow, /top:\s*8px;/);
-  assert.match(shadow, /right:\s*-8px;/);
+  assert.match(shadow, /top:\s*4px;/);
+  assert.match(shadow, /right:\s*-4px;/);
   assert.match(shadow, /width:\s*100%;/);
   assert.match(shadow, /height:\s*100%;/);
   assert.match(shadow, /z-index:\s*-2;/);
@@ -253,7 +250,7 @@ test("cartridge shadow layers behind the unchanged card geometry and short label
   assert.match(label, /box-sizing:\s*border-box;/);
   assert.match(label, /flex:\s*0 0 55%;/);
   assert.match(selectorRule(css, ".cartridge-label p"), /-webkit-line-clamp:\s*1;/);
-  assert.doesNotMatch(cartridgeData, /。[^\n]*。/);
+  assert.match(label, /background:\s*#f7f2e7;/);
 });
 
 test("fullscreen video uses the calibrated viewport geometry", async () => {

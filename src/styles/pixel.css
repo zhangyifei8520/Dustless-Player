@@ -486,7 +486,7 @@
   flex-direction: column;
   padding: 4.5% 5% 3.5%;
   border: 3px solid var(--ink);
-  border-radius: 14px 14px 12px 12px;
+  border-radius: 10px;
   cursor: grab;
   touch-action: manipulation;
   transition: filter 120ms steps(2, end), transform 140ms steps(3, end);
@@ -505,8 +505,8 @@
 .cartridge::after {
   position: absolute;
   z-index: -2;
-  top: 8px;
-  right: -8px;
+  top: 4px;
+  right: -4px;
   width: 100%;
   height: 100%;
   border-radius: inherit;
@@ -514,9 +514,9 @@
   content: "";
 }
 
-.cartridge-green { --shell: var(--green); }
-.cartridge-blue { --shell: var(--pink); }
-.cartridge-pink { --shell: var(--yellow); }
+.cartridge-green { --shell: #3ecf8e; }
+.cartridge-pink { --shell: #ff6fa5; }
+.cartridge-yellow { --shell: #ffc93c; }
 
 .cartridge:hover,
 .cartridge:focus-within {
@@ -548,14 +548,14 @@
   min-height: 15px;
   align-items: flex-start;
   justify-content: space-between;
-  font-size: clamp(7px, 0.9vw, 11px);
+  font-size: clamp(7px, 0.6vw, 9px);
   letter-spacing: 0.05em;
 }
 
 .cartridge-notch {
   display: block;
-  width: 30%;
-  height: 8px;
+  width: 34px;
+  height: 6px;
   background: var(--ink);
   border-radius: 3px;
 }
@@ -563,13 +563,13 @@
 .cartridge-label {
   min-height: 0;
   margin-top: 4%;
-  padding: 5% 6%;
+  padding: 10px 8px;
   overflow: hidden;
   box-sizing: border-box;
   flex: 0 0 55%;
-  border: 3px solid var(--ink);
-  border-radius: 7px;
-  background: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  background: #f7f2e7;
 }
 
 .cartridge-source {
@@ -581,15 +581,15 @@
 
 .cartridge-source span {
   color: var(--shell);
-  font-size: clamp(10px, 1.15vw, 16px);
+  font-size: clamp(12px, 1.25vw, 16px);
   font-weight: 950;
   text-shadow: 1px 1px 0 var(--ink);
 }
 
 .cartridge-label h3 {
-  margin: 4px 0 3px;
+  margin: 6px 0 3px;
   overflow: hidden;
-  font-size: clamp(8px, 1vw, 13px);
+  font-size: clamp(9px, 0.95vw, 13px);
   font-weight: 950;
   line-height: 1.25;
   white-space: nowrap;
@@ -600,8 +600,8 @@
   display: -webkit-box;
   margin: 0;
   overflow: hidden;
-  color: #50607c;
-  font-size: clamp(5px, 0.68vw, 8px);
+  color: #5a6b8c;
+  font-size: clamp(7px, 0.75vw, 11px);
   font-weight: 700;
   line-height: 1.45;
   -webkit-box-orient: vertical;
@@ -807,7 +807,7 @@
   transform: rotate(25deg);
   transform-origin: center;
 }
-.decor-info-card { position: relative; box-sizing: border-box; width: 213px; min-height: 158px; margin-top: 46px; padding: 28px 20px 16px; border: 2px dashed #5366f4; border-radius: 12px; color: var(--ink); font-family: "ChillPixelsMono"; }
+.decor-info-card { position: relative; box-sizing: border-box; width: 213px; min-height: 158px; margin-top: 46px; padding: 28px 20px 16px; border: 2px dashed transparent; border-radius: 12px; color: var(--ink); font-family: "ChillPixelsMono"; }
 .decor-info-card > span { position: absolute; top: 12px; left: 16px; color: #ff6fa5; font-family: sans-serif; font-size: 20px; }
 .decor-info-card p { margin: 24px 0 0 20px; font-size: 14.26px; line-height: 1.55; white-space: nowrap; }
 .decor-info-card b { display: block; margin: 10px 0 0 24px; color: #5366f4; font-size: 13px; letter-spacing: 4px; }

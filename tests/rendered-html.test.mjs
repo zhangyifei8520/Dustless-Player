@@ -29,8 +29,8 @@ test("server-renders the cartridge game prototype", async () => {
   assert.match(html, /class="nav-icon nav-about"/);
   assert.match(html, /<title>不吃灰｜收藏卡带放映机<\/title>/i);
   assert.match(html, /HB-01/);
-  assert.match(html, /LS-02/);
-  assert.match(html, /CR-03/);
+  assert.match(html, /LC-01/);
+  assert.match(html, /EX-01/);
   assert.match(html, /全屏播放/);
   assert.doesNotMatch(html, /PIXEL REPLAY/);
   assert.doesNotMatch(html, />\s*回看\s*</);

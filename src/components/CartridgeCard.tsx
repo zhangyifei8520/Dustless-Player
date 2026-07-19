@@ -45,7 +45,7 @@ export function CartridgeCard({
       </header>
       <div className="cartridge-label">
         <div className="cartridge-source">
-          <span>{cartridge.source === "bilibili" ? "BILI" : cartridge.source === "youtube" ? "YT" : "RED"}</span>
+          <span>{cartridge.icon}</span>
         </div>
         <h3>{cartridge.title}</h3>
         <p>{cartridge.summary}</p>

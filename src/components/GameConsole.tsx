@@ -1,7 +1,16 @@
 "use client";
 
 import { useEffect, useReducer, useRef, useState } from "react";
-import { cartridges, type Cartridge } from "../data/cartridges";
+import type { Cartridge } from "../data/cartridges";
+import {
+  buildCartridgePool,
+  FALLBACK_LIBRARY_CATALOG,
+  HOME_RECOMMENDATIONS_STORAGE_KEY,
+  LIBRARY_STORAGE_KEY,
+  parseLibraryCatalog,
+  pickRecommendations,
+  restoreRecommendations,
+} from "../lib/recommendations";
 import {
   getPlayerMounts,
   initialPlayerState,
@@ -10,12 +19,44 @@ import {
 import { CartridgeCard } from "./CartridgeCard";
 import { SimulatedPlayer } from "./SimulatedPlayer";
 
+const fallbackPool = buildCartridgePool(FALLBACK_LIBRARY_CATALOG);
+const fallbackRecommendations = pickRecommendations(fallbackPool, [], () => 0);
+
 export function GameConsole() {
   const [state, dispatch] = useReducer(playerReducer, initialPlayerState);
   const [notice, setNotice] = useState<string | null>(null);
+  const [catalogPool, setCatalogPool] = useState<Cartridge[]>(fallbackPool);
+  const [recommendations, setRecommendations] = useState<Cartridge[]>(fallbackRecommendations);
   const slotRef = useRef<HTMLDivElement>(null);
-  const active = cartridges.find((card) => card.id === state.activeCartridgeId) ?? null;
+  const active = catalogPool.find((card) => card.id === state.activeCartridgeId) ?? null;
   const playerMounts = getPlayerMounts(state);
+
+  useEffect(() => {
+    const syncCatalog = (raw: string | null, preserveCurrent: boolean) => {
+      const nextPool = buildCartridgePool(parseLibraryCatalog(raw));
+      setCatalogPool(nextPool);
+      setRecommendations((current) => {
+        const ids = preserveCurrent
+          ? current.map((card) => card.id)
+          : undefined;
+        const next = restoreRecommendations(
+          ids ? JSON.stringify({ ids }) : window.localStorage.getItem(HOME_RECOMMENDATIONS_STORAGE_KEY),
+          nextPool,
+        );
+        if (!preserveCurrent) {
+          window.localStorage.setItem(HOME_RECOMMENDATIONS_STORAGE_KEY, JSON.stringify({ ids: next.map((card) => card.id) }));
+        }
+        return next;
+      });
+    };
+
+    syncCatalog(window.localStorage.getItem(LIBRARY_STORAGE_KEY), false);
+    const syncAcrossTabs = (event: StorageEvent) => {
+      if (event.key === LIBRARY_STORAGE_KEY) syncCatalog(event.newValue, true);
+    };
+    window.addEventListener("storage", syncAcrossTabs);
+    return () => window.removeEventListener("storage", syncAcrossTabs);
+  }, []);
 
   useEffect(() => {
     if (state.mode !== "loading") return;
@@ -51,6 +92,14 @@ export function GameConsole() {
 
   const play = (cartridge: Cartridge) => {
     dispatch({ type: "START_LOADING", cartridgeId: cartridge.id });
+  };
+
+  const rerollRecommendations = () => {
+    setRecommendations((current) => {
+      const next = pickRecommendations(catalogPool, current);
+      window.localStorage.setItem(HOME_RECOMMENDATIONS_STORAGE_KEY, JSON.stringify({ ids: next.map((card) => card.id) }));
+      return next;
+    });
   };
 
   const showNavNotice = (label: string) => setNotice(`${label}页面准备中`);
@@ -164,7 +213,7 @@ export function GameConsole() {
             onDrop={(event) => {
               event.preventDefault();
               const id = event.dataTransfer.getData("text/cartridge-id");
-              const cartridge = cartridges.find((item) => item.id === id);
+              const cartridge = catalogPool.find((item) => item.id === id);
               if (cartridge) play(cartridge);
             }}
           >
@@ -189,14 +238,14 @@ export function GameConsole() {
             className="random-recommendation"
             type="button"
             aria-label="随机"
-            onClick={() => setNotice("随机推荐功能准备中")}
+            onClick={rerollRecommendations}
           >
             <span aria-hidden="true">↻</span>
             随机
           </button>
 
           <div className="card-rack" aria-label="每日推荐卡带">
-            {cartridges.map((cartridge) => (
+            {recommendations.map((cartridge) => (
               <CartridgeCard
                 key={cartridge.id}
                 cartridge={cartridge}

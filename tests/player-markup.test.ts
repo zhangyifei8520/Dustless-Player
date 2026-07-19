@@ -4,9 +4,10 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { SimulatedPlayer } from "../src/components/SimulatedPlayer";
-import { cartridges } from "../src/data/cartridges";
+import { buildCartridgePool, FALLBACK_LIBRARY_CATALOG } from "../src/lib/recommendations";
 
 test("Bilibili player iframe grants the exact required media permissions", () => {
+  const cartridges = buildCartridgePool(FALLBACK_LIBRARY_CATALOG);
   const cartridge = cartridges.find((item) => item.source === "bilibili");
   assert.ok(cartridge);
 

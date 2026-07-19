@@ -170,7 +170,7 @@ export function GameConsole() {
           >
             <span>DROP HERE</span>
           </div>
-          <p className="slot-hint"><span>↑</span> 把卡带拖进插槽</p>
+          <p className="slot-hint">把卡带拖进插槽</p>
 
           <button
             className="console-control fullscreen-control"

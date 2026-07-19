@@ -46,6 +46,7 @@ test("pixel controls use the calibrated font, focus, and slot contract", async (
   assert.equal(powerControl.match(/top:\s*([^;]+);/)?.[1], fullscreenControl.match(/top:\s*([^;]+);/)?.[1]);
 
   assert.match(consoleSource, /className="slot-hint"/);
+  assert.doesNotMatch(consoleSource, /className="slot-hint"[^>]*><span>↑<\/span>/);
   assert.doesNotMatch(consoleSource, /className="drag-hint"/);
 });
 

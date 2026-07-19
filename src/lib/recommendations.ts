@@ -47,8 +47,40 @@ const explore = [
   ["EX-06", "AU", "澳洲徒步路线", "6条壮观徒步线路", "网页", "https://www.worldnomads.com/explore/oceania/australia/6-spectacular-australia-hikes"],
 ] as const;
 
+const fallbackThumbnails: Record<string, string> = {
+  "HB-01": "https://i0.hdslb.com/bfs/archive/3194257f165cee39d621982d69b76bf8b628588c.jpg",
+  "HB-02": "https://i1.hdslb.com/bfs/archive/625384bbed3e74dbc82345d609dc63e96cc92b44.jpg",
+  "HB-03": "https://i0.hdslb.com/bfs/archive/08f05405e2897544e84535222ec4960b74ab08b6.jpg",
+  "HB-04": "https://i2.hdslb.com/bfs/archive/02656bb8710e00e64adea9ef10cfc870524fae96.jpg",
+  "HB-05": "https://i1.hdslb.com/bfs/archive/97fc90a8259983a8f86a7b0ec9bbbd669f72469c.jpg",
+  "HB-06": "https://i1.hdslb.com/bfs/archive/6ee887b30fbf6f836bdef1dfbe5a25f6aaaf18b8.jpg",
+  "HB-07": "https://i2.chuimg.com/9b739377d531444aaad276df10e6778d_1080w_1440h.jpg?imageView2/2/w/660/interlace/1/q/75",
+  "LC-01": "https://img.youtube.com/vi/K5KVEU3aaeQ/hqdefault.jpg",
+  "LC-02": "https://img.youtube.com/vi/BpOsHF5Oj_I/hqdefault.jpg",
+  "LC-03": "https://i2.hdslb.com/bfs/archive/9b45c566fc54ad6e6555d7075179acf7cd9c6077.jpg",
+  "LC-04": "https://i1.hdslb.com/bfs/archive/263248d52719c642d52ba39fda52cd3870be930d.jpg",
+  "LC-05": "https://transformer-circuits.pub/2026/workspace/png/img_1b62b10ab235e6e7.png",
+  "LC-06": "https://bair.berkeley.edu/static/blog/spex/teaser.png",
+  "LC-07": "/library-page/assets/hello-agents.png",
+  "LC-08": "/library-page/assets/gates-ai.png",
+  "EX-01": "https://i0.hdslb.com/bfs/archive/2e58fa6425f55edf88ea0017a15a5790b348bf53.jpg",
+  "EX-02": "https://i0.hdslb.com/bfs/archive/214a3e81d03476406ae502d3d762f8b3e2a9e927.jpg",
+  "EX-03": "https://i0.hdslb.com/bfs/archive/51dbf0fb90b149b8d8b515e57c9b2b55d347c497.jpg",
+  "EX-04": "https://i2.hdslb.com/bfs/archive/dc1f73ad06203d8376d1e17f6b64a263f6b1fb5e.jpg",
+  "EX-05": "https://i1.hdslb.com/bfs/archive/42136d4353b4817e513945b08353df58879214f5.jpg",
+  "EX-06": "https://media.worldnomads.com/explore/australia/great-walks/great-ocean-walk-social.jpg",
+};
+
 function items(records: readonly (readonly string[])[]): LibraryItem[] {
-  return records.map(([code, icon, title, desc, src, url]) => ({ code, icon, title, desc, src, url }));
+  return records.map(([code, icon, title, desc, src, url]) => ({
+    code,
+    icon,
+    title,
+    desc,
+    src,
+    url,
+    thumb: fallbackThumbnails[code],
+  }));
 }
 
 export const FALLBACK_LIBRARY_CATALOG: LibraryCatalog = {

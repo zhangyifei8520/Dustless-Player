@@ -65,6 +65,15 @@ test("keeps a collection card thumbnail for the homepage player", () => {
   assert.equal(buildCartridgePool(catalog)[0]?.thumbnail, "https://images.example.com/cover.jpg");
 });
 
+test("ships collection detail covers in the homepage fallback catalog", () => {
+  const pool = buildCartridgePool(FALLBACK_LIBRARY_CATALOG);
+
+  assert.equal(
+    pool.find((item) => item.code === "LC-05")?.thumbnail,
+    "https://transformer-circuits.pub/2026/workspace/png/img_1b62b10ab235e6e7.png",
+  );
+});
+
 test("restores valid saved recommendations and replaces deleted records", () => {
   const pool = buildCartridgePool(FALLBACK_LIBRARY_CATALOG);
   const saved = pickRecommendations(pool, [], () => 0.2);

@@ -23,12 +23,14 @@ export function SimulatedPlayer({
           allowFullScreen
         />
       ) : (
-        <div className="sim-external">
-          <span>{cartridge.source === "xiaohongshu" ? "小红书" : "外部平台"}</span>
-          <h2>{cartridge.title}</h2>
-          <p>该平台限制站内播放，请在原页面观看。</p>
-          <a href={target.url} target="_blank" rel="noopener noreferrer">
-            打开原链接
+        <div className="sim-web-preview">
+          <iframe
+            className="sim-web-embed"
+            src={target.url}
+            title={`${cartridge.title} - 网页预览`}
+          />
+          <a className="sim-web-fallback" href={target.url} target="_blank" rel="noopener noreferrer">
+            打开原链接 ↗
           </a>
         </div>
       )}

@@ -682,6 +682,43 @@
   background: #090b12;
 }
 
+.sim-web-preview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #10142a;
+}
+
+.sim-web-embed {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+}
+
+.sim-web-fallback {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 1;
+  padding: 7px 10px;
+  border: 2px solid #fff;
+  color: #fff;
+  background: var(--blue);
+  box-shadow: 3px 3px 0 #090b16;
+  font-size: clamp(7px, 0.75vw, 11px);
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.sim-web-fallback:hover,
+.sim-web-fallback:focus-visible {
+  color: var(--ink);
+  background: #fff;
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
 .sim-external {
   display: grid;
   width: 100%;

@@ -54,7 +54,8 @@
   gap: 16px;
 }
 
-.site-header nav button {
+.site-header nav button,
+.site-header nav a {
   display: inline-flex;
   gap: 10px;
   align-items: center;
@@ -70,7 +71,9 @@
 }
 
 .site-header nav button:hover,
-.site-header nav button:focus-visible {
+.site-header nav button:focus-visible,
+.site-header nav a:hover,
+.site-header nav a:focus-visible {
   outline: none;
   transform: translateY(-2px);
 }

@@ -13,7 +13,7 @@ Expand the desktop game page with restrained pixel decorations, a clickable rand
 
 ## Decorative copy
 
-- Top-left identity: a CSS pixel handheld icon plus `不落灰 · 播放器` in the supplied pixel font.
+- Top-left identity: a CSS pixel handheld icon plus `不吃灰 · 播放器` in the supplied pixel font.
 - Left-middle decoration: a yellow pixel smile, `Ready to play?`, a two-line `Favorites / Game Player` headline, a yellow pixel underline, the exact sentence `Drag your favorite game cartridge into the slot and let's play!`, and blue pixel arrows.
 - Right-middle decoration: `LET'S PLAY!` speech-card, yellow smile, pink pixel star, pink heart, a blue dashed information card containing `COLLECT GAMES`, `UNLOCK MEMORIES`, and `PLAY FOREVER`, plus a blue pixel lightning mark.
 - Both decorative groups are intentionally small and remain background accents; they do not overlap the console stage at desktop size.

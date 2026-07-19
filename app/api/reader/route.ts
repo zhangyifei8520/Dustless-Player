@@ -1,4 +1,4 @@
-import { extractReaderCover, parseReaderMarkdown } from "@/src/lib/reader";
+import { parseReaderMarkdown } from "@/src/lib/reader";
 
 function safeUrl(value: string | null) {
   if (!value) return null;
@@ -32,16 +32,13 @@ export async function GET(request: Request) {
 
     const article = parseReaderMarkdown(markdown);
     if (!article) {
-      return Response.json(
-        { error: "暂时无法读取该网页", coverImage: extractReaderCover(markdown) },
-        { status: 502 },
-      );
+      return Response.json({ error: "暂时无法读取该网页" }, { status: 502 });
     }
 
     return Response.json(article, {
       headers: { "Cache-Control": "public, max-age=86400" },
     });
   } catch {
-    return Response.json({ error: "暂时无法读取该网页", coverImage: null }, { status: 502 });
+    return Response.json({ error: "暂时无法读取该网页" }, { status: 502 });
   }
 }

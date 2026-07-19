@@ -50,5 +50,13 @@ test("the reader fallback includes a cover slot and saved summary copy", async (
 
   assert.match(source, /sim-reader-summary-cover/);
   assert.match(source, /sim-reader-summary-copy/);
-  assert.match(source, /coverImage/);
+  assert.match(source, /cartridge\.thumbnail/);
+});
+
+test("the summary cover reuses the saved library thumbnail without a referrer", async () => {
+  const source = await readFile(new URL("../src/components/SimulatedPlayer.tsx", import.meta.url), "utf8");
+
+  assert.match(source, /cartridge\.thumbnail \?\? "\/assets\/reader-cover-placeholder\.svg"/);
+  assert.match(source, /referrerPolicy="no-referrer"/);
+  assert.doesNotMatch(source, /原网页暂时无法读取/);
 });

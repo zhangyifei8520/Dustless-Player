@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { extractReaderCover, parseReaderMarkdown } from "../src/lib/reader";
+import { parseReaderMarkdown } from "../src/lib/reader";
 
 test("turns reader markdown into a compact article with images and paragraphs", () => {
   const article = parseReaderMarkdown(`Title: 测试文章
@@ -30,11 +30,4 @@ Markdown Content:
 
 test("rejects reader output without readable body content", () => {
   assert.equal(parseReaderMarkdown("Title: 空页面\n\nMarkdown Content:"), null);
-});
-
-test("extracts the first image when reader markdown has no readable article body", () => {
-  assert.equal(
-    extractReaderCover("Title: 页面\n\nMarkdown Content:\n![封面](https://images.example.com/cover.jpg)"),
-    "https://images.example.com/cover.jpg",
-  );
 });

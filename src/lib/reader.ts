@@ -10,10 +10,6 @@ export type ReaderArticle = {
 
 const imagePattern = /!\[([^\]]*)\]\((https?:\/\/[^\s)]+)(?:\s+[^)]*)?\)/;
 
-export function extractReaderCover(raw: string): string | null {
-  return raw.match(imagePattern)?.[2] ?? null;
-}
-
 function textOnly(line: string) {
   return line
     .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")

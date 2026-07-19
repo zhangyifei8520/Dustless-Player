@@ -7,6 +7,8 @@ const consolePath = new URL("../src/components/GameConsole.tsx", import.meta.url
 const cartridgePath = new URL("../src/components/CartridgeCard.tsx", import.meta.url);
 const cartridgesPath = new URL("../src/data/cartridges.ts", import.meta.url);
 const smilePath = new URL("../public/assets/pixel-smile.svg", import.meta.url);
+const defaultCursorPath = new URL("../public/assets/pixel-cursor-default.svg", import.meta.url);
+const actionCursorPath = new URL("../public/assets/pixel-cursor-action.svg", import.meta.url);
 
 function selectorRule(css, selector) {
   const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -215,6 +217,21 @@ test("side decorations use the supplied vector pixel smile", async () => {
   assert.match(selectorRule(css, ".decor-lightning"), /width:\s*34px;/);
   assert.match(selectorRule(css, ".decor-lightning"), /height:\s*auto;/);
   assert.doesNotMatch(css, /\.decor-smile::before/);
+});
+
+test("the page uses the supplied enlarged pixel cursors with calibrated hotspots", async () => {
+  const [css, defaultCursor, actionCursor] = await Promise.all([
+    readFile(cssPath, "utf8"),
+    readFile(defaultCursorPath, "utf8").catch(() => ""),
+    readFile(actionCursorPath, "utf8").catch(() => ""),
+  ]);
+
+  assert.match(defaultCursor, /<svg[^>]*width="45"[^>]*height="66"[^>]*viewBox="0 0 30 44"/);
+  assert.match(actionCursor, /<svg[^>]*width="57"[^>]*height="60"[^>]*viewBox="0 0 38 40"/);
+  assert.match(css, /--cursor-default:\s*url\("\/assets\/pixel-cursor-default\.svg"\)\s*0\s*0,\s*auto;/);
+  assert.match(css, /--cursor-action:\s*url\("\/assets\/pixel-cursor-action\.svg"\)\s*15\s*0,\s*pointer;/);
+  assert.match(css, /body,[^}]*\.game-page\s*\{\s*cursor:\s*var\(--cursor-default\);/s);
+  assert.match(css, /button:not\(:disabled\),[^}]*\[draggable="true"\][^}]*\{\s*cursor:\s*var\(--cursor-action\);/s);
 });
 
 test("cartridge shadow layers behind the unchanged card geometry and short label", async () => {

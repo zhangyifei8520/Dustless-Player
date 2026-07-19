@@ -24,6 +24,8 @@
   --pink: #ec6b9f;
   --card-blue: #6079e5;
   --pixel-shadow: 3px 3px 0 var(--ink);
+  --cursor-default: url("/assets/pixel-cursor-default.svg") 0 0, auto;
+  --cursor-action: url("/assets/pixel-cursor-action.svg") 15 0, pointer;
 }
 
 ::selection {
@@ -923,4 +925,20 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+body,
+.game-page {
+  cursor: var(--cursor-default);
+}
+
+button:not(:disabled),
+a[href],
+[role="button"],
+[draggable="true"],
+input:not(:disabled),
+select:not(:disabled),
+textarea:not(:disabled),
+label[for] {
+  cursor: var(--cursor-action);
 }

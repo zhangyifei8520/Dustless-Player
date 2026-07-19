@@ -91,7 +91,7 @@ export function GameConsole() {
           <span aria-hidden="true">♥</span>
           <p>COLLECT GAMES<br />UNLOCK MEMORIES<br />PLAY FOREVER</p>
           <b aria-hidden="true">···</b>
-          <i aria-hidden="true">ϟ</i>
+          <img className="decor-lightning" src="/assets/pixel-lightning.svg" width={95} height={127} alt="" aria-hidden="true" />
         </div>
       </aside>
 

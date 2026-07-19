@@ -210,6 +210,10 @@ test("side decorations use the supplied vector pixel smile", async () => {
   assert.match(selectorRule(css, ".decor-info-card"), /min-height:\s*158px;/);
   assert.match(selectorRule(css, ".decor-info-card"), /font-family:\s*"ChillPixelsMono";/);
   assert.match(selectorRule(css, ".decor-info-card p"), /font-size:\s*14\.26px;/);
+  assert.match(consoleSource, /className="decor-lightning"[^>]*src="\/assets\/pixel-lightning\.svg"/);
+  assert.doesNotMatch(consoleSource, />ϟ</);
+  assert.match(selectorRule(css, ".decor-lightning"), /width:\s*34px;/);
+  assert.match(selectorRule(css, ".decor-lightning"), /height:\s*auto;/);
   assert.doesNotMatch(css, /\.decor-smile::before/);
 });
 

@@ -739,15 +739,18 @@
 
 .sim-reader-summary {
   display: grid;
+  grid-template-rows: auto auto auto auto auto auto;
   padding: 8%;
   place-content: center;
   justify-items: center;
-  gap: 6%;
+  gap: 5%;
+  overflow: auto;
   text-align: center;
   background: radial-gradient(circle at 50% 20%, rgba(76, 95, 232, .4), transparent 38%), #10142a;
 }
 
 .sim-reader-summary span { color: #ffc93c; font-size: clamp(8px, .8vw, 12px); font-weight: 950; letter-spacing: .14em; }
+.sim-reader-summary strong { color: #fff; font-size: clamp(8px, .8vw, 12px); font-weight: 950; }
 .sim-reader-summary h2,
 .sim-reader-summary p { margin: 0; }
 .sim-reader-summary h2 { font-size: clamp(16px, 2vw, 30px); }

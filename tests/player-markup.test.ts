@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -34,4 +35,12 @@ test("ordinary saved webpages enter the in-app reader instead of an iframe", () 
   assert.match(html, /sim-reader-loading/);
   assert.match(html, /READING WEB PAGE/);
   assert.doesNotMatch(html, /网页预览/);
+});
+
+test("the reader fallback clearly keeps the saved card summary", async () => {
+  const source = await readFile(new URL("../src/components/SimulatedPlayer.tsx", import.meta.url), "utf8");
+
+  assert.match(source, /SAVED SUMMARY/);
+  assert.match(source, /\{cartridge\.summary\}/);
+  assert.match(source, /已保留收藏库中的原始摘要/);
 });

@@ -109,10 +109,11 @@ function WebReader({ cartridge, url, state }: { cartridge: Cartridge; url: strin
 
   return (
     <div className="sim-reader-summary">
-      <span>UNREADABLE PAGE</span>
+      <span>SAVED SUMMARY</span>
+      <strong>原网页暂时无法读取</strong>
       <h2>{cartridge.title}</h2>
       <p>{cartridge.summary}</p>
-      <small>该网站暂时无法读取，已保留收藏摘要。</small>
+      <small>已保留收藏库中的原始摘要，可打开链接继续查看。</small>
       <a href={url} target="_blank" rel="noopener noreferrer">打开原链接 ↗</a>
     </div>
   );

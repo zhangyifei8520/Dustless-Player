@@ -25,7 +25,7 @@
   --card-blue: #6079e5;
   --pixel-shadow: 3px 3px 0 var(--ink);
   --cursor-default: url("/assets/pixel-cursor-default.svg") 0 0, auto;
-  --cursor-action: url("/assets/pixel-cursor-action.svg") 15 0, pointer;
+  --cursor-action: url("/assets/pixel-cursor-action.svg") 5 0, pointer;
 }
 
 ::selection {

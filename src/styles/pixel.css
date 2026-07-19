@@ -38,6 +38,27 @@
   overflow: hidden;
 }
 
+.site-footer {
+  position: absolute;
+  z-index: 30;
+  right: 28px;
+  bottom: 14px;
+  left: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #3a4664;
+  font-family: "Press Start 2P", "PoxiaoPixel", monospace;
+  font-size: 9px;
+  pointer-events: none;
+}
+
+.site-footer strong {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+}
+
 .site-header {
   position: absolute;
   z-index: 100;
@@ -591,7 +612,7 @@
   overflow: hidden;
   font-family: "Noto Sans SC", sans-serif;
   font-size: clamp(8px, 0.9vw, 12px);
-  font-weight: 950;
+  font-weight: 900;
   line-height: 1.25;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -602,8 +623,9 @@
   margin: 0;
   overflow: hidden;
   color: #5a6b8c;
+  font-family: "Noto Sans SC", sans-serif;
   font-size: clamp(7px, 0.75vw, 11px);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.45;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
@@ -754,8 +776,8 @@
 .sim-reader-summary strong { color: #fff; font-size: clamp(8px, .8vw, 12px); font-weight: 950; }
 .sim-reader-summary h2,
 .sim-reader-summary p { margin: 0; }
-.sim-reader-summary h2 { font-size: clamp(15px, calc(2vw - 1px), 29px); line-height: 1.2; }
-.sim-reader-summary p { color: #c4ccec; font-size: clamp(8px, calc(1vw - 1px), 13px); font-weight: 700; }
+.sim-reader-summary h2 { font-family: "Noto Sans SC", sans-serif; font-size: clamp(15px, calc(2vw - 1px), 29px); font-weight: 900; line-height: 1.2; }
+.sim-reader-summary p { color: #c4ccec; font-family: "Noto Sans SC", sans-serif; font-size: clamp(8px, calc(1vw - 1px), 13px); font-weight: 400; }
 .sim-reader-summary small { color: #8d99bd; font-size: clamp(6px, calc(.75vw - 1px), 9px); }
 .sim-reader-summary a {
   padding: 9px 14px;

@@ -77,3 +77,21 @@ test("the left drag instruction stays within its yellow underline", async () => 
 
   assert.match(styles, /\.left-decor small \{[^}]*width: 250px/);
 });
+
+test("homepage card and summary copy use the collection typography", async () => {
+  const styles = await readFile(new URL("../src/styles/pixel.css", import.meta.url), "utf8");
+
+  assert.match(styles, /\.cartridge-label h3 \{[^}]*font-family: "Noto Sans SC", sans-serif;[^}]*font-weight: 900/);
+  assert.match(styles, /\.cartridge-label p \{[^}]*font-family: "Noto Sans SC", sans-serif;[^}]*font-weight: 400/);
+  assert.match(styles, /\.sim-reader-summary h2 \{[^}]*font-family: "Noto Sans SC", sans-serif;[^}]*font-weight: 900/);
+  assert.match(styles, /\.sim-reader-summary p \{[^}]*font-family: "Noto Sans SC", sans-serif;[^}]*font-weight: 400/);
+});
+
+test("homepage repeats the collection footer labels", async () => {
+  const source = await readFile(new URL("../src/components/GamePrototype.tsx", import.meta.url), "utf8");
+
+  assert.match(source, /不吃灰播放器/);
+  assert.match(source, /Dustless Player/);
+  assert.match(source, /© 2026 Version 1\.0/);
+  assert.match(source, /site-footer/);
+});

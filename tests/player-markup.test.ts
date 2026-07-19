@@ -22,7 +22,7 @@ test("Bilibili player iframe grants the exact required media permissions", () =>
   );
 });
 
-test("ordinary saved webpages render inside the screen with an original-link fallback", () => {
+test("ordinary saved webpages enter the in-app reader instead of an iframe", () => {
   const cartridges = buildCartridgePool(FALLBACK_LIBRARY_CATALOG);
   const cartridge = cartridges.find((item) => item.source === "external");
   assert.ok(cartridge);
@@ -31,7 +31,7 @@ test("ordinary saved webpages render inside the screen with an original-link fal
     createElement(SimulatedPlayer, { cartridge }),
   );
 
-  assert.match(html, new RegExp(`src="${cartridge.url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
-  assert.match(html, /title="[^"]+ - 网页预览"/);
-  assert.match(html, /打开原链接/);
+  assert.match(html, /sim-reader-loading/);
+  assert.match(html, /READING WEB PAGE/);
+  assert.doesNotMatch(html, /网页预览/);
 });

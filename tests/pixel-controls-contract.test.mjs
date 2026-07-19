@@ -142,13 +142,27 @@ test("console decor uses approved card, control, random-button, and accent geome
   assert.match(rack, /gap:\s*6\.86%;/);
   assert.match(selectorRule(css, ".power-control"), /top:\s*56\.5%;/);
   assert.match(selectorRule(css, ".fullscreen-control"), /top:\s*56\.5%;/);
-  assert.match(selectorRule(css, ".random-recommendation"), /right:\s*-13%;/);
+  assert.match(selectorRule(css, ".random-recommendation"), /top:\s*66%;/);
+  assert.match(selectorRule(css, ".random-recommendation"), /right:\s*-3%;/);
+  assert.match(selectorRule(css, ".random-recommendation"), /min-width:\s*96px;/);
+  assert.match(selectorRule(css, ".random-recommendation"), /min-height:\s*31px;/);
   assert.match(selectorRule(css, ".random-recommendation"), /background:[^;]*#475bf4/);
   for (const selector of [".brand-lockup", ".left-decor", ".right-decor"]) {
     assert.match(selectorRule(css, selector), /position:\s*absolute;/);
   }
   assert.match(selectorRule(css, ".slot-hint"), /text-align:\s*center;/);
   assert.match(selectorRule(css, ".cartridge-blue"), /--shell:\s*var\(--yellow\);/);
+});
+
+test("side decorations use the enlarged desktop type scale", async () => {
+  const css = await readFile(cssPath, "utf8");
+
+  assert.match(selectorRule(css, ".left-decor"), /width:\s*200px;/);
+  assert.match(selectorRule(css, ".left-decor h1"), /font-size:\s*29px;/);
+  assert.match(selectorRule(css, ".left-decor small"), /font-size:\s*9px;/);
+  assert.match(selectorRule(css, ".right-decor"), /width:\s*198px;/);
+  assert.match(selectorRule(css, ".lets-play"), /font-size:\s*20px;/);
+  assert.match(selectorRule(css, ".decor-info-card p"), /font-size:\s*9px;/);
 });
 
 test("cartridge shadow layers behind the unchanged card geometry and short label", async () => {

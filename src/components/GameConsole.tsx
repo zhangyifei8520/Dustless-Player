@@ -75,7 +75,7 @@ export function GameConsole() {
       </header>
 
       <aside className="left-decor" aria-label="卡带拖拽说明">
-        <span className="decor-smile" aria-hidden="true">●</span>
+        <img className="decor-smile" src="/assets/pixel-smile.svg" width={68} height={64} alt="" aria-hidden="true" />
         <p>Ready to play?</p>
         <h1>不吃灰播放器<br /><span>DUSTLESS PLAYER</span></h1>
         <i className="decor-underline" aria-hidden="true" />
@@ -86,7 +86,7 @@ export function GameConsole() {
       <aside className="right-decor" aria-label="游戏收藏说明">
         <span className="decor-star" aria-hidden="true">✦</span>
         <div className="lets-play">LET&apos;S<br />PLAY!</div>
-        <span className="decor-smile right-smile" aria-hidden="true">●</span>
+        <img className="decor-smile right-smile" src="/assets/pixel-smile.svg" width={68} height={64} alt="" aria-hidden="true" />
         <div className="decor-info-card">
           <span aria-hidden="true">♥</span>
           <p>COLLECT GAMES<br />UNLOCK MEMORIES<br />PLAY FOREVER</p>

@@ -785,18 +785,11 @@
 .left-decor b { display: block; margin-top: 21px; color: #3f55e8; font-size: 48px; letter-spacing: -9px; }
 
 .decor-smile {
-  display: grid;
-  width: 28px;
-  height: 28px;
-  place-items: center;
-  border: 3px solid var(--ink);
-  color: var(--ink);
-  background: #ffd843;
-  clip-path: polygon(20% 0,80% 0,100% 20%,100% 80%,80% 100%,20% 100%,0 80%,0 20%);
-  font-size: 0;
+  display: block;
+  width: 32px;
+  height: auto;
 }
 
-.decor-smile::before { width: 4px; height: 4px; background: var(--ink); box-shadow: 12px 0 0 var(--ink), 5px 10px 0 1px var(--ink); content: ""; }
 .decor-underline { display: block; width: 264px; height: 9px; margin-top: -4px; background: #ffe665; transform: skew(-16deg); }
 
 .right-decor { position: absolute; top: 27%; right: clamp(28px, calc(50% - 650px), 18vw); width: 250px; }

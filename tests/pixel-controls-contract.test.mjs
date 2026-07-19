@@ -6,6 +6,7 @@ const cssPath = new URL("../src/styles/pixel.css", import.meta.url);
 const consolePath = new URL("../src/components/GameConsole.tsx", import.meta.url);
 const cartridgePath = new URL("../src/components/CartridgeCard.tsx", import.meta.url);
 const cartridgesPath = new URL("../src/data/cartridges.ts", import.meta.url);
+const smilePath = new URL("../public/assets/pixel-smile.svg", import.meta.url);
 
 function selectorRule(css, selector) {
   const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -183,6 +184,22 @@ test("idle screen uses the supplied rainbow boot-title treatment", async () => {
   assert.match(selectorRule(css, ".boot-title span:nth-child(even)"), /translateY\(6px\)/);
   assert.match(selectorRule(css, ".idle-screen small"), /background:\s*transparent;/);
   assert.match(selectorRule(css, ".idle-screen small"), /font-size:\s*clamp\(6\.4px,\s*\.8vw,\s*9\.6px\);/);
+});
+
+test("side decorations use the supplied vector pixel smile", async () => {
+  const [css, consoleSource, smileSvg] = await Promise.all([
+    readFile(cssPath, "utf8"),
+    readFile(consolePath, "utf8"),
+    readFile(smilePath, "utf8"),
+  ]);
+
+  assert.equal((consoleSource.match(/src="\/assets\/pixel-smile\.svg"/g) ?? []).length, 2);
+  assert.match(smileSvg, /<svg[^>]*viewBox="0 0 68 64"/);
+  assert.match(smileSvg, /#F5C956/);
+  assert.doesNotMatch(smileSvg, /#F9ED32/);
+  assert.match(selectorRule(css, ".decor-smile"), /width:\s*32px;/);
+  assert.match(selectorRule(css, ".decor-smile"), /height:\s*auto;/);
+  assert.doesNotMatch(css, /\.decor-smile::before/);
 });
 
 test("cartridge shadow layers behind the unchanged card geometry and short label", async () => {

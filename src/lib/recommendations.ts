@@ -12,6 +12,7 @@ type LibraryItem = {
   desc: string;
   src: string;
   url: string;
+  thumb?: string;
 };
 
 export type LibraryCatalog = Record<CartridgeCategory, { items: LibraryItem[] }>;
@@ -73,6 +74,13 @@ function isValidUrl(value: unknown): value is string {
   }
 }
 
+function normalizeThumbnail(value: unknown): string | null {
+  if (typeof value !== "string" || !value.trim()) return null;
+  if (/^https?:\/\//.test(value)) return value;
+  if (value.startsWith("./assets/")) return `/library-page/assets/${value.slice("./assets/".length)}`;
+  return null;
+}
+
 function normalizeCatalog(value: unknown): LibraryCatalog | null {
   if (!value || typeof value !== "object") return null;
   const catalog = value as Partial<Record<CartridgeCategory, { items?: unknown }>>;
@@ -83,7 +91,16 @@ function normalizeCatalog(value: unknown): LibraryCatalog | null {
       if (!item || typeof item !== "object") return [];
       const candidate = item as Partial<LibraryItem>;
       if (!isValidUrl(candidate.url) || typeof candidate.code !== "string" || typeof candidate.icon !== "string" || typeof candidate.title !== "string" || typeof candidate.desc !== "string") return [];
-      return [{ code: candidate.code, icon: candidate.icon, title: candidate.title, desc: candidate.desc, src: typeof candidate.src === "string" ? candidate.src : "网页", url: candidate.url }];
+      const thumb = normalizeThumbnail(candidate.thumb);
+      return [{
+        code: candidate.code,
+        icon: candidate.icon,
+        title: candidate.title,
+        desc: candidate.desc,
+        src: typeof candidate.src === "string" ? candidate.src : "网页",
+        url: candidate.url,
+        ...(thumb ? { thumb } : {}),
+      }];
     }),
   }])) as LibraryCatalog;
 }
@@ -121,6 +138,7 @@ export function buildCartridgePool(catalog: LibraryCatalog): Cartridge[] {
       icon: item.icon,
       title: item.title,
       summary: item.desc,
+      thumbnail: item.thumb ?? null,
     })));
 }
 

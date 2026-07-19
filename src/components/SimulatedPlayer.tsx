@@ -127,7 +127,7 @@ function WebReader({ cartridge, url, state }: { cartridge: Cartridge; url: strin
         <a href={url} target="_blank" rel="noopener noreferrer">打开原链接 ↗</a>
       </div>
       <div className="sim-reader-summary-cover">
-        <img src={state.coverImage ?? "/assets/reader-cover-placeholder.svg"} alt="" />
+        <img src={cartridge.thumbnail ?? state.coverImage ?? "/assets/reader-cover-placeholder.svg"} alt="" />
       </div>
     </div>
   );

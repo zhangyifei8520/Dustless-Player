@@ -8,4 +8,5 @@ export type Cartridge = {
   icon: string;
   title: string;
   summary: string;
+  thumbnail?: string | null;
 };

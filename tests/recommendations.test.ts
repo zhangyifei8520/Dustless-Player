@@ -45,6 +45,26 @@ test("falls back safely when saved library data is malformed or has no usable ca
   assert.equal(parseLibraryCatalog(JSON.stringify({ catalog: { health: { items: [] } } })), FALLBACK_LIBRARY_CATALOG);
 });
 
+test("keeps a collection card thumbnail for the homepage player", () => {
+  const catalog = parseLibraryCatalog(JSON.stringify({
+    catalog: {
+      health: { items: [{
+        code: "HB-99",
+        icon: "HB",
+        title: "收藏库封面测试",
+        desc: "应保留收藏库封面",
+        src: "网页",
+        url: "https://example.com/article",
+        thumb: "https://images.example.com/cover.jpg",
+      }] },
+      learn: { items: [] },
+      explore: { items: [] },
+    },
+  }));
+
+  assert.equal(buildCartridgePool(catalog)[0]?.thumbnail, "https://images.example.com/cover.jpg");
+});
+
 test("restores valid saved recommendations and replaces deleted records", () => {
   const pool = buildCartridgePool(FALLBACK_LIBRARY_CATALOG);
   const saved = pickRecommendations(pool, [], () => 0.2);

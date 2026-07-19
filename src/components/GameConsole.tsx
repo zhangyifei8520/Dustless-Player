@@ -108,7 +108,7 @@ export function GameConsole() {
     <>
       <header className="site-header">
         <nav aria-label="主导航">
-          <button type="button" onClick={() => showNavNotice("首页")}>
+          <button type="button" onClick={() => window.location.assign("/")}>
             <span className="nav-icon nav-home" aria-hidden="true" />
             首页
           </button>

@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 async function render() {
@@ -27,7 +28,7 @@ test("server-renders the cartridge game prototype", async () => {
   assert.match(html, /class="nav-icon nav-home"/);
   assert.match(html, /class="nav-icon nav-library"/);
   assert.match(html, /class="nav-icon nav-about"/);
-  assert.match(html, /<title>不吃灰｜收藏卡带放映机<\/title>/i);
+  assert.match(html, /<title>首页<\/title>/i);
   assert.match(html, /HB-01/);
   assert.match(html, /LC-01/);
   assert.match(html, /EX-01/);
@@ -35,4 +36,10 @@ test("server-renders the cartridge game prototype", async () => {
   assert.doesNotMatch(html, /PIXEL REPLAY/);
   assert.doesNotMatch(html, />\s*回看\s*</);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);
+});
+
+test("the homepage navigation always targets the console route", async () => {
+  const source = await readFile(new URL("../src/components/GameConsole.tsx", import.meta.url), "utf8");
+
+  assert.match(source, /onClick=\{\(\) => window\.location\.assign\("\/"\)\}/);
 });

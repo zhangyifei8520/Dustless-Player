@@ -794,8 +794,16 @@
 
 .right-decor { position: absolute; top: 27%; right: clamp(28px, calc(50% - 650px), 18vw); width: 250px; }
 .decor-star { position: absolute; top: -12px; left: 5px; color: #ff699d; font-size: 28px; }
-.lets-play { position: relative; width: 142px; margin-left: 30px; padding: 12px 14px; border: 3px solid var(--ink); background: #fffdf5; box-shadow: 3px 3px 0 var(--ink); font-size: 21.6px; line-height: 1.05; transform: rotate(5deg); }
-.right-smile { position: absolute; top: 44px; left: 172px; }
+.lets-play { position: relative; width: 142px; margin-left: 30px; padding: 12px 14px; border: 3px solid var(--ink); background: #fffdf5; box-shadow: 3px 3px 0 var(--ink); font-family: "ChillPixelsMono"; font-size: 21.6px; line-height: 1.05; transform: rotate(5deg); }
+.right-smile {
+  position: absolute;
+  z-index: 2;
+  top: 42px;
+  left: 164px;
+  width: 42px;
+  transform: rotate(30deg);
+  transform-origin: center;
+}
 .decor-info-card { position: relative; min-height: 150px; margin-top: 46px; padding: 28px 20px 16px; border: 2px dashed #5366f4; border-radius: 12px; color: var(--ink); }
 .decor-info-card > span { position: absolute; top: 12px; left: 16px; color: #ff6fa5; font-family: sans-serif; font-size: 20px; }
 .decor-info-card p { margin: 24px 0 0 20px; font-size: 12.96px; line-height: 1.55; white-space: nowrap; }

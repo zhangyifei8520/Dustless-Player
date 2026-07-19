@@ -164,8 +164,9 @@ test("side decorations use the reduced desktop type scale and Mono wordmark", as
   assert.match(selectorRule(css, ".left-decor"), /width:\s*300px;/);
   assert.match(selectorRule(css, ".left-decor p"), /font-size:\s*14\.4px;/);
   assert.match(selectorRule(css, ".left-decor h1"), /font-size:\s*22\.2px;/);
+  assert.match(selectorRule(css, ".left-decor h1"), /letter-spacing:\s*\.1em;/);
   assert.match(selectorRule(css, ".left-decor h1 span"), /font-family:\s*["']ChillPixelsMono["']/);
-  assert.match(selectorRule(css, ".left-decor h1 span"), /font-size:\s*22\.8px;/);
+  assert.match(selectorRule(css, ".left-decor h1 span"), /font-size:\s*25px;/);
   assert.match(selectorRule(css, ".left-decor h1 span"), /letter-spacing:\s*\.02em;/);
   assert.match(selectorRule(css, ".left-decor small"), /font-size:\s*12\.96px;/);
   assert.match(selectorRule(css, ".right-decor"), /width:\s*250px;/);

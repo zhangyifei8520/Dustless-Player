@@ -7,6 +7,7 @@ const consolePath = new URL("../src/components/GameConsole.tsx", import.meta.url
 const cartridgePath = new URL("../src/components/CartridgeCard.tsx", import.meta.url);
 const recommendationsPath = new URL("../src/lib/recommendations.ts", import.meta.url);
 const smilePath = new URL("../public/assets/pixel-smile.svg", import.meta.url);
+const offSmilePath = new URL("../public/assets/pixel-off-smile.svg", import.meta.url);
 
 function selectorRule(css, selector) {
   const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -193,6 +194,17 @@ test("idle screen uses the supplied rainbow boot-title treatment", async () => {
   assert.match(selectorRule(css, ".boot-title span:nth-child(even)"), /translateY\(6px\)/);
   assert.match(selectorRule(css, ".idle-screen small"), /background:\s*transparent;/);
   assert.match(selectorRule(css, ".idle-screen small"), /font-size:\s*clamp\(6\.4px,\s*\.8vw,\s*9\.6px\);/);
+});
+
+test("the powered-off screen uses the supplied white pixel smile", async () => {
+  const [consoleSource, offSmileSvg] = await Promise.all([
+    readFile(consolePath, "utf8"),
+    readFile(offSmilePath, "utf8"),
+  ]);
+
+  assert.match(consoleSource, /className="off-screen"[\s\S]*src="\/assets\/pixel-off-smile\.svg"/);
+  assert.match(offSmileSvg, /<svg[^>]*viewBox="0 0 42 42"/);
+  assert.match(offSmileSvg, /fill="white"/);
 });
 
 test("side decorations use the supplied vector pixel smile", async () => {

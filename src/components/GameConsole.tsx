@@ -179,7 +179,9 @@ export function GameConsole() {
               </div>
             )}
             {state.mode === "off" && (
-              <div className="off-screen"><span>·</span><span>·</span><i /></div>
+              <div className="off-screen">
+                <img src="/assets/pixel-off-smile.svg" width={42} height={42} alt="" aria-hidden="true" />
+              </div>
             )}
             {state.mode === "loading" && (
               <div className="loading-screen">

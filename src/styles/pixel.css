@@ -285,28 +285,11 @@
 
 .off-screen {
   display: grid;
-  grid-template-columns: repeat(2, 7px);
-  gap: 22px;
-  align-content: center;
-  justify-content: center;
+  place-items: center;
   height: 100%;
 }
 
-.off-screen span {
-  color: #fff;
-  font-size: 28px;
-  line-height: 0;
-}
-
-.off-screen i {
-  grid-column: 1 / -1;
-  width: 31px;
-  height: 12px;
-  margin: 0 auto;
-  border-right: 6px solid #fff;
-  border-bottom: 6px solid #fff;
-  border-left: 6px solid #fff;
-}
+.off-screen img { display: block; width: 36px; height: 36px; }
 
 .loading-screen {
   display: grid;

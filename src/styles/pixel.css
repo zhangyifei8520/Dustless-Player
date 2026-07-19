@@ -853,7 +853,7 @@
 .left-decor p { margin: 18px 0 12px; color: #4056de; font-size: 14.4px; }
 .left-decor h1 { margin: 0; font-size: 22.2px; line-height: 1.25; letter-spacing: .1em; }
 .left-decor h1 span { font-family: "ChillPixelsMono"; font-size: 25px; letter-spacing: .02em; white-space: nowrap; }
-.left-decor small { display: block; width: 285px; margin-top: 21px; font-family: "PoxiaoPixel"; font-size: 12.96px; line-height: 1.55; }
+.left-decor small { display: block; width: 250px; margin-top: 21px; font-family: "PoxiaoPixel"; font-size: 12.96px; line-height: 1.55; }
 .left-decor b { display: block; margin-top: 21px; color: #3f55e8; font-size: 48px; letter-spacing: -9px; }
 
 .decor-smile {

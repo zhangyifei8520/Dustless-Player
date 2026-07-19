@@ -71,3 +71,9 @@ test("the summary card detects horizontal covers for its alternate layout", asyn
   assert.match(styles, /sim-reader-summary-cover\.is-landscape/);
   assert.match(styles, /rotate\(10deg\)/);
 });
+
+test("the left drag instruction stays within its yellow underline", async () => {
+  const styles = await readFile(new URL("../src/styles/pixel.css", import.meta.url), "utf8");
+
+  assert.match(styles, /\.left-decor small \{[^}]*width: 250px/);
+});

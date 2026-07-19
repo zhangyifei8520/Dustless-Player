@@ -7,6 +7,7 @@ Expand the desktop game page with restrained pixel decorations, a clickable rand
 ## Layout and controls
 
 - Increase each cartridge and its play strip width by 20% while retaining the current card-rack gap. The three cards remain centred in the purple cabinet.
+- Change only the middle cartridge shell from blue to the supplied warm yellow reference; preserve its content, button, black shadow, and interaction.
 - Move Power and fullscreen controls upward by the same amount so they remain horizontally aligned.
 - Add a blue-purple random-recommendation button at the vertical centre on the right edge of the purple cabinet. It includes a pixel loop/shuffle mark and `随机推荐` in `PoxiaoPixel`. It is interactive but only shows `随机推荐功能准备中` for now.
 - Change the centred slot hint to `↑ 把卡带拖进插槽`.

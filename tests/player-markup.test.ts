@@ -60,3 +60,14 @@ test("the summary cover reuses the saved library thumbnail without a referrer", 
   assert.match(source, /referrerPolicy="no-referrer"/);
   assert.doesNotMatch(source, /原网页暂时无法读取/);
 });
+
+test("the summary card detects horizontal covers for its alternate layout", async () => {
+  const source = await readFile(new URL("../src/components/SimulatedPlayer.tsx", import.meta.url), "utf8");
+  const styles = await readFile(new URL("../src/styles/pixel.css", import.meta.url), "utf8");
+
+  assert.match(source, /coverOrientation/);
+  assert.match(source, /naturalWidth > .*naturalHeight/);
+  assert.match(source, /is-landscape/);
+  assert.match(styles, /sim-reader-summary-cover\.is-landscape/);
+  assert.match(styles, /rotate\(10deg\)/);
+});

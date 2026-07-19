@@ -86,6 +86,10 @@ export function SimulatedPlayer({
 }
 
 function WebReader({ cartridge, url, state }: { cartridge: Cartridge; url: string; state: ReaderState }) {
+  const coverSrc = cartridge.thumbnail ?? "/assets/reader-cover-placeholder.svg";
+  const [loadedCover, setLoadedCover] = useState<{ src: string; orientation: "portrait" | "landscape" } | null>(null);
+  const coverOrientation = loadedCover?.src === coverSrc ? loadedCover.orientation : "portrait";
+
   if (state.status === "loading" || state.url !== url) {
     return <div className="sim-reader-loading">READING WEB PAGE<span>...</span></div>;
   }
@@ -110,7 +114,7 @@ function WebReader({ cartridge, url, state }: { cartridge: Cartridge; url: strin
   }
 
   return (
-    <div className="sim-reader-summary">
+    <div className={`sim-reader-summary ${coverOrientation === "landscape" ? "is-landscape" : ""}`}>
       <div className="sim-reader-summary-copy">
         <span>SAVED SUMMARY</span>
         <h2>{cartridge.title}</h2>
@@ -118,8 +122,16 @@ function WebReader({ cartridge, url, state }: { cartridge: Cartridge; url: strin
         <small>已保留收藏库中的原始摘要，可打开链接继续查看。</small>
         <a href={url} target="_blank" rel="noopener noreferrer">打开原链接 ↗</a>
       </div>
-      <div className="sim-reader-summary-cover">
-        <img src={cartridge.thumbnail ?? "/assets/reader-cover-placeholder.svg"} alt="" referrerPolicy="no-referrer" />
+      <div className={`sim-reader-summary-cover ${coverOrientation === "landscape" ? "is-landscape" : ""}`}>
+        <img
+          src={coverSrc}
+          alt=""
+          referrerPolicy="no-referrer"
+          onLoad={(event) => setLoadedCover({
+            src: coverSrc,
+            orientation: event.currentTarget.naturalWidth > event.currentTarget.naturalHeight ? "landscape" : "portrait",
+          })}
+        />
       </div>
     </div>
   );

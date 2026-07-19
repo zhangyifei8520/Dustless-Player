@@ -748,21 +748,22 @@
   background: radial-gradient(circle at 50% 20%, rgba(76, 95, 232, .4), transparent 38%), #10142a;
 }
 
+.sim-reader-summary.is-landscape { grid-template-columns: minmax(0, 50%) minmax(0, 42%); }
 .sim-reader-summary-copy { display: grid; gap: 6%; align-content: center; justify-items: start; min-width: 0; }
-.sim-reader-summary span { color: #ffc93c; font-size: clamp(8px, .8vw, 12px); font-weight: 950; letter-spacing: .14em; }
+.sim-reader-summary span { color: #ffc93c; font-size: clamp(7px, calc(.8vw - 1px), 11px); font-weight: 950; letter-spacing: .14em; }
 .sim-reader-summary strong { color: #fff; font-size: clamp(8px, .8vw, 12px); font-weight: 950; }
 .sim-reader-summary h2,
 .sim-reader-summary p { margin: 0; }
-.sim-reader-summary h2 { font-size: clamp(16px, 2vw, 30px); line-height: 1.2; }
-.sim-reader-summary p { color: #c4ccec; font-size: clamp(9px, 1vw, 14px); font-weight: 700; }
-.sim-reader-summary small { color: #8d99bd; font-size: clamp(7px, .75vw, 10px); }
+.sim-reader-summary h2 { font-size: clamp(15px, calc(2vw - 1px), 29px); line-height: 1.2; }
+.sim-reader-summary p { color: #c4ccec; font-size: clamp(8px, calc(1vw - 1px), 13px); font-weight: 700; }
+.sim-reader-summary small { color: #8d99bd; font-size: clamp(6px, calc(.75vw - 1px), 9px); }
 .sim-reader-summary a {
   padding: 9px 14px;
   border: 3px solid #fff;
   color: #fff;
   background: var(--blue);
   box-shadow: 3px 3px 0 #090b16;
-  font-size: clamp(7px, 0.75vw, 11px);
+  font-size: clamp(6px, calc(.75vw - 1px), 10px);
   font-weight: 950;
   text-decoration: none;
 }
@@ -779,11 +780,13 @@
   align-self: center;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  border: 3px solid var(--ink);
+  border: 3px solid #fff;
   background: #f7f2e7;
-  box-shadow: 5px 5px 0 #090b16;
+  box-shadow: 6px 6px 0 var(--blue);
   transform: rotate(8deg);
 }
+
+.sim-reader-summary-cover.is-landscape { aspect-ratio: 16 / 10; transform: rotate(10deg); }
 
 .sim-reader-summary-cover img {
   display: block;

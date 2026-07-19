@@ -63,7 +63,7 @@ export function GameConsole() {
             <span className="nav-icon nav-home" aria-hidden="true" />
             首页
           </button>
-          <button type="button" onClick={() => showNavNotice("收藏库")}>
+          <button type="button" onClick={() => window.location.assign("/library")}>
             <span className="nav-icon nav-library" aria-hidden="true" />
             收藏库
           </button>

@@ -153,7 +153,8 @@ test("console decor uses approved card, control, random-button, and accent geome
     assert.match(selectorRule(css, selector), /position:\s*absolute;/);
   }
   assert.match(selectorRule(css, ".slot-hint"), /text-align:\s*center;/);
-  assert.match(selectorRule(css, ".cartridge-blue"), /--shell:\s*var\(--yellow\);/);
+  assert.match(selectorRule(css, ".cartridge-blue"), /--shell:\s*var\(--pink\);/);
+  assert.match(selectorRule(css, ".cartridge-pink"), /--shell:\s*var\(--yellow\);/);
 });
 
 test("side decorations use the reduced desktop type scale and Mono wordmark", async () => {
@@ -161,15 +162,15 @@ test("side decorations use the reduced desktop type scale and Mono wordmark", as
 
   assert.match(css, /font-family:\s*["']ChillPixelsMono["'][^}]*src:\s*url\(["']\/fonts\/ChillPixels-Mono\.otf["']\)/s);
   assert.match(selectorRule(css, ".left-decor"), /width:\s*300px;/);
-  assert.match(selectorRule(css, ".left-decor p"), /font-size:\s*12px;/);
-  assert.match(selectorRule(css, ".left-decor h1"), /font-size:\s*18\.5px;/);
+  assert.match(selectorRule(css, ".left-decor p"), /font-size:\s*14\.4px;/);
+  assert.match(selectorRule(css, ".left-decor h1"), /font-size:\s*22\.2px;/);
   assert.match(selectorRule(css, ".left-decor h1 span"), /font-family:\s*["']ChillPixelsMono["']/);
-  assert.match(selectorRule(css, ".left-decor h1 span"), /font-size:\s*19px;/);
+  assert.match(selectorRule(css, ".left-decor h1 span"), /font-size:\s*22\.8px;/);
   assert.match(selectorRule(css, ".left-decor h1 span"), /letter-spacing:\s*\.02em;/);
-  assert.match(selectorRule(css, ".left-decor small"), /font-size:\s*10\.8px;/);
+  assert.match(selectorRule(css, ".left-decor small"), /font-size:\s*12\.96px;/);
   assert.match(selectorRule(css, ".right-decor"), /width:\s*250px;/);
-  assert.match(selectorRule(css, ".lets-play"), /font-size:\s*18px;/);
-  assert.match(selectorRule(css, ".decor-info-card p"), /font-size:\s*10\.8px;/);
+  assert.match(selectorRule(css, ".lets-play"), /font-size:\s*21\.6px;/);
+  assert.match(selectorRule(css, ".decor-info-card p"), /font-size:\s*12\.96px;/);
 });
 
 test("idle screen uses the supplied rainbow boot-title treatment", async () => {

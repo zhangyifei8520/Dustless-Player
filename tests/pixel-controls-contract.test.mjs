@@ -77,15 +77,41 @@ test("cartridge cards only show source, title, and summary", async () => {
   assert.doesNotMatch(cartridgeData, /date:/);
 });
 
+test("console exposes the approved identity, decor copy, random placeholder, and slot hint", async () => {
+  const consoleSource = await readFile(consolePath, "utf8");
+
+  for (const copy of [
+    "不吃灰 · 播放器",
+    "Ready to play?",
+    "Favorites",
+    "Game Player",
+    "COLLECT GAMES",
+    "UNLOCK MEMORIES",
+    "PLAY FOREVER",
+    "随机推荐",
+    "随机推荐功能准备中",
+    "把卡带拖进插槽",
+  ]) assert.match(consoleSource, new RegExp(copy.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+
+  assert.match(consoleSource, /Drag your favorite game cartridge into the slot and let(?:'|&apos;)s play!/);
+  assert.match(consoleSource, /LET(?:'|&apos;)S<br \/>PLAY!/);
+
+  assert.doesNotMatch(consoleSource, /把卡带拖进插槽 · 或点击播放/);
+  assert.match(consoleSource, /className="brand-lockup"/);
+  assert.match(consoleSource, /className="left-decor"/);
+  assert.match(consoleSource, /className="right-decor"/);
+  assert.match(consoleSource, /className="random-recommendation"/);
+});
+
 test("flat cartridge rack uses compact controls and black navigation", async () => {
   const css = await readFile(cssPath, "utf8");
 
   const cardRack = selectorRule(css, ".card-rack");
-  assert.match(cardRack, /left:\s*14%;/);
-  assert.match(cardRack, /right:\s*14%;/);
+  assert.match(cardRack, /left:\s*8%;/);
+  assert.match(cardRack, /right:\s*8%;/);
   assert.match(cardRack, /height:\s*29%;/);
   assert.match(cardRack, /bottom:\s*0;/);
-  assert.match(cardRack, /gap:\s*8%;/);
+  assert.match(cardRack, /gap:\s*6\.86%;/);
 
   const cartridge = selectorRule(css, ".cartridge");
   assert.doesNotMatch(cartridge, /box-shadow:/);
@@ -106,6 +132,23 @@ test("flat cartridge rack uses compact controls and black navigation", async () 
   const navIcon = selectorRule(css, ".nav-icon");
   assert.match(navIcon, /color:\s*#000;/);
   assert.match(navIcon, /filter:\s*none;/);
+});
+
+test("console decor uses approved card, control, random-button, and accent geometry", async () => {
+  const css = await readFile(cssPath, "utf8");
+  const rack = selectorRule(css, ".card-rack");
+  assert.match(rack, /left:\s*8%;/);
+  assert.match(rack, /right:\s*8%;/);
+  assert.match(rack, /gap:\s*6\.86%;/);
+  assert.match(selectorRule(css, ".power-control"), /top:\s*56\.5%;/);
+  assert.match(selectorRule(css, ".fullscreen-control"), /top:\s*56\.5%;/);
+  assert.match(selectorRule(css, ".random-recommendation"), /right:\s*-13%;/);
+  assert.match(selectorRule(css, ".random-recommendation"), /background:[^;]*#475bf4/);
+  for (const selector of [".brand-lockup", ".left-decor", ".right-decor"]) {
+    assert.match(selectorRule(css, selector), /position:\s*absolute;/);
+  }
+  assert.match(selectorRule(css, ".slot-hint"), /text-align:\s*center;/);
+  assert.match(selectorRule(css, ".cartridge-blue"), /--shell:\s*var\(--yellow\);/);
 });
 
 test("cartridge shadow layers behind the unchanged card geometry and short label", async () => {

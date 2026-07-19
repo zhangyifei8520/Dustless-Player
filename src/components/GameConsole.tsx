@@ -57,6 +57,10 @@ export function GameConsole() {
 
   return (
     <>
+      <div className="brand-lockup" aria-label="不吃灰 · 播放器">
+        <span className="brand-handheld" aria-hidden="true"><i /></span>
+        <strong>不吃灰 · 播放器</strong>
+      </div>
       <header className="site-header">
         <nav aria-label="主导航">
           <button type="button" onClick={() => showNavNotice("首页")}>
@@ -73,6 +77,27 @@ export function GameConsole() {
           </button>
         </nav>
       </header>
+
+      <aside className="left-decor" aria-label="卡带拖拽说明">
+        <span className="decor-smile" aria-hidden="true">●</span>
+        <p>Ready to play?</p>
+        <h1>Favorites<br />Game Player</h1>
+        <i className="decor-underline" aria-hidden="true" />
+        <small>Drag your favorite game cartridge into the slot and let&apos;s play!</small>
+        <b aria-hidden="true">»»</b>
+      </aside>
+
+      <aside className="right-decor" aria-label="游戏收藏说明">
+        <span className="decor-star" aria-hidden="true">✦</span>
+        <div className="lets-play">LET&apos;S<br />PLAY!</div>
+        <span className="decor-smile right-smile" aria-hidden="true">●</span>
+        <div className="decor-info-card">
+          <span aria-hidden="true">♥</span>
+          <p>COLLECT GAMES<br />UNLOCK MEMORIES<br />PLAY FOREVER</p>
+          <b aria-hidden="true">···</b>
+          <i aria-hidden="true">ϟ</i>
+        </div>
+      </aside>
 
       <section className="console-section" id="console" aria-label="收藏卡带放映机">
         <div className="console-stage">
@@ -143,7 +168,7 @@ export function GameConsole() {
           >
             <span>DROP HERE</span>
           </div>
-          <p className="slot-hint"><span>↑</span> 把卡带拖进插槽 · 或点击播放</p>
+          <p className="slot-hint"><span>↑</span> 把卡带拖进插槽</p>
 
           <button
             className="console-control fullscreen-control"
@@ -156,6 +181,16 @@ export function GameConsole() {
           >
             <span className="expand-symbol" aria-hidden="true"><i /><i /><i /><i /></span>
             <small>全屏</small>
+          </button>
+
+          <button
+            className="random-recommendation"
+            type="button"
+            aria-label="随机推荐"
+            onClick={() => setNotice("随机推荐功能准备中")}
+          >
+            <span aria-hidden="true">↻</span>
+            随机推荐
           </button>
 
           <div className="card-rack" aria-label="每日推荐卡带">

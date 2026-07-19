@@ -18,7 +18,7 @@ export function SimulatedPlayer({
         <iframe
           className="sim-player-embed"
           src={target.src}
-          title={`${cartridge.title} - Bilibili 播放器`}
+          title={`${cartridge.title} - 视频播放器`}
           allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
           allowFullScreen
         />

@@ -35,6 +35,21 @@ test("builds the official Bilibili player URL for both video cards", () => {
   );
 });
 
+test("builds an embeddable YouTube player URL for a saved video", () => {
+  assert.deepEqual(
+    getPlaybackTarget(
+      makeCartridge({
+        source: "youtube" as Cartridge["source"],
+        url: "https://www.youtube.com/watch?v=K5KVEU3aaeQ&t=56s",
+      }),
+    ),
+    {
+      kind: "embed",
+      src: "https://www.youtube.com/embed/K5KVEU3aaeQ?autoplay=1&rel=0&start=56",
+    },
+  );
+});
+
 test("uses the original Xiaohongshu URL as an external target", () => {
   const url = "https://www.xiaohongshu.com/explore/6829a272000000002100a94e";
 
@@ -46,11 +61,21 @@ test("uses the original Xiaohongshu URL as an external target", () => {
 
 test("uses a safe external target for malformed or unsupported embed sources", () => {
   const malformedUrl = "https://www.bilibili.com/video/not-a-bvid/";
+  const malformedYoutubeUrl = "not a valid YouTube URL";
   const unsupportedUrl = "https://example.com/video/BV1wL9sYEE8t";
 
   assert.deepEqual(
     getPlaybackTarget(makeCartridge({ url: malformedUrl })),
     { kind: "external", url: malformedUrl },
+  );
+  assert.deepEqual(
+    getPlaybackTarget(
+      makeCartridge({
+        source: "youtube",
+        url: malformedYoutubeUrl,
+      }),
+    ),
+    { kind: "external", url: malformedYoutubeUrl },
   );
   assert.deepEqual(
     getPlaybackTarget(

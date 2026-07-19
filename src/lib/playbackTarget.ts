@@ -16,5 +16,23 @@ export function getPlaybackTarget(cartridge: Cartridge): PlaybackTarget {
     }
   }
 
+  if (cartridge.source === "youtube") {
+    try {
+      const url = new URL(cartridge.url);
+      const videoId = url.searchParams.get("v");
+      const startSeconds = Number.parseInt(url.searchParams.get("t")?.replace(/s$/, "") ?? "0", 10);
+
+      if (videoId) {
+        const start = Number.isFinite(startSeconds) && startSeconds > 0 ? `&start=${startSeconds}` : "";
+        return {
+          kind: "embed",
+          src: `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0${start}`,
+        };
+      }
+    } catch {
+      return { kind: "external", url: cartridge.url };
+    }
+  }
+
   return { kind: "external", url: cartridge.url };
 }

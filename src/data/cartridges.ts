@@ -1,7 +1,7 @@
 export type Cartridge = {
   id: string;
   color: "green" | "blue" | "pink";
-  source: "bilibili" | "xiaohongshu";
+  source: "bilibili" | "xiaohongshu" | "youtube";
   url: string;
   code: string;
   title: string;
@@ -12,8 +12,8 @@ export const cartridges: Cartridge[] = [
   {
     id: "hb-01",
     color: "green",
-    source: "xiaohongshu",
-    url: "https://www.xiaohongshu.com/explore/6829a272000000002100a94e",
+    source: "youtube",
+    url: "https://www.youtube.com/watch?v=K5KVEU3aaeQ&t=56s",
     code: "HB-01",
     title: "灵感收藏放映室",
     summary: "把值得回看的生活灵感重新装进一张随时可播的卡带。",

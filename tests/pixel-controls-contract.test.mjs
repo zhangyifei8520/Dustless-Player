@@ -156,16 +156,20 @@ test("console decor uses approved card, control, random-button, and accent geome
   assert.match(selectorRule(css, ".cartridge-blue"), /--shell:\s*var\(--yellow\);/);
 });
 
-test("side decorations use the enlarged desktop type scale", async () => {
+test("side decorations use the reduced desktop type scale and Mono wordmark", async () => {
   const css = await readFile(cssPath, "utf8");
 
+  assert.match(css, /font-family:\s*["']ChillPixelsMono["'][^}]*src:\s*url\(["']\/fonts\/ChillPixels-Mono\.otf["']\)/s);
   assert.match(selectorRule(css, ".left-decor"), /width:\s*300px;/);
-  assert.match(selectorRule(css, ".left-decor p"), /font-size:\s*20px;/);
-  assert.match(selectorRule(css, ".left-decor h1"), /font-size:\s*44px;/);
-  assert.match(selectorRule(css, ".left-decor small"), /font-size:\s*18px;/);
+  assert.match(selectorRule(css, ".left-decor p"), /font-size:\s*12px;/);
+  assert.match(selectorRule(css, ".left-decor h1"), /font-size:\s*18\.5px;/);
+  assert.match(selectorRule(css, ".left-decor h1 span"), /font-family:\s*["']ChillPixelsMono["']/);
+  assert.match(selectorRule(css, ".left-decor h1 span"), /font-size:\s*19px;/);
+  assert.match(selectorRule(css, ".left-decor h1 span"), /letter-spacing:\s*\.02em;/);
+  assert.match(selectorRule(css, ".left-decor small"), /font-size:\s*10\.8px;/);
   assert.match(selectorRule(css, ".right-decor"), /width:\s*250px;/);
-  assert.match(selectorRule(css, ".lets-play"), /font-size:\s*30px;/);
-  assert.match(selectorRule(css, ".decor-info-card p"), /font-size:\s*18px;/);
+  assert.match(selectorRule(css, ".lets-play"), /font-size:\s*18px;/);
+  assert.match(selectorRule(css, ".decor-info-card p"), /font-size:\s*10\.8px;/);
 });
 
 test("idle screen uses the supplied rainbow boot-title treatment", async () => {

@@ -8,6 +8,11 @@
   src: url("/fonts/ChillPixels-Minimalism.otf") format("opentype");
 }
 
+@font-face {
+  font-family: "ChillPixelsMono";
+  src: url("/fonts/ChillPixels-Mono.otf") format("opentype");
+}
+
 :root {
   --ink: #171a31;
   --blue: #3348df;
@@ -773,10 +778,10 @@
 }
 
 .left-decor { position: absolute; top: 28%; left: clamp(28px, calc(50% - 650px), 18vw); width: 300px; }
-.left-decor p { margin: 18px 0 12px; color: #4056de; font-size: 20px; }
-.left-decor h1 { margin: 0; font-size: 44px; line-height: 1.12; letter-spacing: .02em; }
-.left-decor h1 span { font-size: .72em; letter-spacing: .08em; white-space: nowrap; }
-.left-decor small { display: block; width: 285px; margin-top: 21px; font-family: "PoxiaoPixel"; font-size: 18px; line-height: 1.55; }
+.left-decor p { margin: 18px 0 12px; color: #4056de; font-size: 12px; }
+.left-decor h1 { margin: 0; font-size: 18.5px; line-height: 1.25; letter-spacing: .02em; }
+.left-decor h1 span { font-family: "ChillPixelsMono"; font-size: 19px; letter-spacing: .02em; white-space: nowrap; }
+.left-decor small { display: block; width: 285px; margin-top: 21px; font-family: "PoxiaoPixel"; font-size: 10.8px; line-height: 1.55; }
 .left-decor b { display: block; margin-top: 21px; color: #3f55e8; font-size: 48px; letter-spacing: -9px; }
 
 .decor-smile {
@@ -796,11 +801,11 @@
 
 .right-decor { position: absolute; top: 27%; right: clamp(28px, calc(50% - 650px), 18vw); width: 250px; }
 .decor-star { position: absolute; top: -12px; left: 5px; color: #ff699d; font-size: 28px; }
-.lets-play { position: relative; width: 142px; margin-left: 30px; padding: 12px 14px; border: 3px solid var(--ink); background: #fffdf5; box-shadow: 3px 3px 0 var(--ink); font-size: 30px; line-height: 1.05; transform: rotate(5deg); }
+.lets-play { position: relative; width: 142px; margin-left: 30px; padding: 12px 14px; border: 3px solid var(--ink); background: #fffdf5; box-shadow: 3px 3px 0 var(--ink); font-size: 18px; line-height: 1.05; transform: rotate(5deg); }
 .right-smile { position: absolute; top: 44px; left: 172px; }
 .decor-info-card { position: relative; min-height: 150px; margin-top: 46px; padding: 28px 20px 16px; border: 2px dashed #5366f4; border-radius: 12px; color: var(--ink); }
 .decor-info-card > span { position: absolute; top: 12px; left: 16px; color: #ff6fa5; font-family: sans-serif; font-size: 20px; }
-.decor-info-card p { margin: 24px 0 0 20px; font-size: 18px; line-height: 1.55; white-space: nowrap; }
+.decor-info-card p { margin: 24px 0 0 20px; font-size: 10.8px; line-height: 1.55; white-space: nowrap; }
 .decor-info-card b { display: block; margin: 10px 0 0 24px; color: #5366f4; font-size: 13px; letter-spacing: 4px; }
 .decor-info-card i { position: absolute; right: -6px; bottom: -16px; color: #4d55e5; font-family: sans-serif; font-size: 45px; font-style: normal; transform: rotate(16deg); }
 

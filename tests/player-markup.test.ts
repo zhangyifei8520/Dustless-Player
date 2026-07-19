@@ -95,3 +95,10 @@ test("homepage repeats the collection footer labels", async () => {
   assert.match(source, /© 2026 Version 1\.0/);
   assert.match(source, /site-footer/);
 });
+
+test("homepage footer uses its calibrated smaller visual scale", async () => {
+  const styles = await readFile(new URL("../src/styles/pixel.css", import.meta.url), "utf8");
+
+  assert.match(styles, /\.site-footer \{[^}]*font-size: 7px/);
+  assert.match(styles, /\.site-footer strong \{[^}]*font-size: 10px/);
+});

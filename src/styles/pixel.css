@@ -49,13 +49,13 @@
   justify-content: space-between;
   color: #3a4664;
   font-family: "Press Start 2P", "PoxiaoPixel", monospace;
-  font-size: 9px;
+  font-size: 7px;
   pointer-events: none;
 }
 
 .site-footer strong {
   font-family: "Noto Sans SC", sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 900;
 }
 

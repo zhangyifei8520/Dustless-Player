@@ -13,7 +13,9 @@ type SimulatedPlayerProps = {
 type ReaderState =
   | { status: "loading" }
   | { status: "ready"; url: string; article: ReaderArticle }
-  | { status: "error"; url: string };
+  | { status: "error"; url: string; coverImage: string | null };
+
+type ReaderFailure = { coverImage?: string | null };
 
 const readerCacheKey = "dustless-reader-cache-v1";
 
@@ -53,15 +55,22 @@ export function SimulatedPlayer({
     const controller = new AbortController();
     fetch(`/api/reader?url=${encodeURIComponent(externalUrl)}`, { signal: controller.signal })
       .then(async (response) => {
-        if (!response.ok) throw new Error("reader request failed");
-        return response.json() as Promise<ReaderArticle>;
+        const body = await response.json() as ReaderArticle | ReaderFailure;
+        if (!response.ok) throw body;
+        return body as ReaderArticle;
       })
       .then((article) => {
         cacheArticle(externalUrl, article);
         setReaderState({ status: "ready", url: externalUrl, article });
       })
       .catch((error: unknown) => {
-        if ((error as { name?: string }).name !== "AbortError") setReaderState({ status: "error", url: externalUrl });
+        if ((error as { name?: string }).name !== "AbortError") {
+          setReaderState({
+            status: "error",
+            url: externalUrl,
+            coverImage: typeof (error as ReaderFailure).coverImage === "string" ? (error as ReaderFailure).coverImage : null,
+          });
+        }
       });
     return () => controller.abort();
   }, [externalUrl]);
@@ -109,12 +118,17 @@ function WebReader({ cartridge, url, state }: { cartridge: Cartridge; url: strin
 
   return (
     <div className="sim-reader-summary">
-      <span>SAVED SUMMARY</span>
-      <strong>原网页暂时无法读取</strong>
-      <h2>{cartridge.title}</h2>
-      <p>{cartridge.summary}</p>
-      <small>已保留收藏库中的原始摘要，可打开链接继续查看。</small>
-      <a href={url} target="_blank" rel="noopener noreferrer">打开原链接 ↗</a>
+      <div className="sim-reader-summary-copy">
+        <span>SAVED SUMMARY</span>
+        <strong>原网页暂时无法读取</strong>
+        <h2>{cartridge.title}</h2>
+        <p>{cartridge.summary}</p>
+        <small>已保留收藏库中的原始摘要，可打开链接继续查看。</small>
+        <a href={url} target="_blank" rel="noopener noreferrer">打开原链接 ↗</a>
+      </div>
+      <div className="sim-reader-summary-cover">
+        <img src={state.coverImage ?? "/assets/reader-cover-placeholder.svg"} alt="" />
+      </div>
     </div>
   );
 }

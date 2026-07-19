@@ -44,3 +44,11 @@ test("the reader fallback clearly keeps the saved card summary", async () => {
   assert.match(source, /\{cartridge\.summary\}/);
   assert.match(source, /已保留收藏库中的原始摘要/);
 });
+
+test("the reader fallback includes a cover slot and saved summary copy", async () => {
+  const source = await readFile(new URL("../src/components/SimulatedPlayer.tsx", import.meta.url), "utf8");
+
+  assert.match(source, /sim-reader-summary-cover/);
+  assert.match(source, /sim-reader-summary-copy/);
+  assert.match(source, /coverImage/);
+});

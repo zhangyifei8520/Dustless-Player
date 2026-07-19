@@ -739,21 +739,20 @@
 
 .sim-reader-summary {
   display: grid;
-  grid-template-rows: auto auto auto auto auto auto;
+  grid-template-columns: minmax(0, 1fr) 30%;
+  align-items: center;
   padding: 8%;
-  place-content: center;
-  justify-items: center;
-  gap: 5%;
+  gap: 8%;
   overflow: auto;
-  text-align: center;
   background: radial-gradient(circle at 50% 20%, rgba(76, 95, 232, .4), transparent 38%), #10142a;
 }
 
+.sim-reader-summary-copy { display: grid; gap: 6%; align-content: center; justify-items: start; min-width: 0; }
 .sim-reader-summary span { color: #ffc93c; font-size: clamp(8px, .8vw, 12px); font-weight: 950; letter-spacing: .14em; }
 .sim-reader-summary strong { color: #fff; font-size: clamp(8px, .8vw, 12px); font-weight: 950; }
 .sim-reader-summary h2,
 .sim-reader-summary p { margin: 0; }
-.sim-reader-summary h2 { font-size: clamp(16px, 2vw, 30px); }
+.sim-reader-summary h2 { font-size: clamp(16px, 2vw, 30px); line-height: 1.2; }
 .sim-reader-summary p { color: #c4ccec; font-size: clamp(9px, 1vw, 14px); font-weight: 700; }
 .sim-reader-summary small { color: #8d99bd; font-size: clamp(7px, .75vw, 10px); }
 .sim-reader-summary a {
@@ -773,6 +772,24 @@
   background: #fff;
   outline: 2px solid var(--blue);
   outline-offset: 2px;
+}
+
+.sim-reader-summary-cover {
+  align-self: center;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 3px solid var(--ink);
+  background: #f7f2e7;
+  box-shadow: 5px 5px 0 #090b16;
+  transform: rotate(8deg);
+}
+
+.sim-reader-summary-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
 }
 
 .pixel-toast {

@@ -1,4 +1,4 @@
-import { parseReaderMarkdown } from "@/src/lib/reader";
+import { extractReaderCover, parseReaderMarkdown } from "@/src/lib/reader";
 
 function safeUrl(value: string | null) {
   if (!value) return null;
@@ -17,25 +17,31 @@ export async function GET(request: Request) {
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 12_000);
-    let article;
+    let markdown = "";
 
     try {
       const response = await fetch(`https://r.jina.ai/${encodeURI(sourceUrl)}`, {
         headers: { Accept: "text/markdown" },
         signal: controller.signal,
       });
+      markdown = await response.text();
       if (!response.ok) throw new Error(`reader response: ${response.status}`);
-      article = parseReaderMarkdown(await response.text());
     } finally {
       clearTimeout(timeout);
     }
 
-    if (!article) throw new Error("reader returned no usable article");
+    const article = parseReaderMarkdown(markdown);
+    if (!article) {
+      return Response.json(
+        { error: "暂时无法读取该网页", coverImage: extractReaderCover(markdown) },
+        { status: 502 },
+      );
+    }
 
     return Response.json(article, {
       headers: { "Cache-Control": "public, max-age=86400" },
     });
   } catch {
-    return Response.json({ error: "暂时无法读取该网页" }, { status: 502 });
+    return Response.json({ error: "暂时无法读取该网页", coverImage: null }, { status: 502 });
   }
 }

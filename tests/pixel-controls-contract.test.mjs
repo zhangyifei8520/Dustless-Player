@@ -79,6 +79,14 @@ test("cartridge cards only show source, title, and summary", async () => {
   assert.doesNotMatch(cardSource, /date:/);
 });
 
+test("homepage cartridge titles use the collection Chinese font one size smaller", async () => {
+  const css = await readFile(cssPath, "utf8");
+  const title = selectorRule(css, ".cartridge-label h3");
+
+  assert.match(title, /font-family:\s*["']Noto Sans SC["']/);
+  assert.match(title, /font-size:\s*clamp\(8px,\s*0\.9vw,\s*12px\);/);
+});
+
 test("console exposes the approved identity, decor copy, random placeholder, and slot hint", async () => {
   const consoleSource = await readFile(consolePath, "utf8");
 

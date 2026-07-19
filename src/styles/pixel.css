@@ -589,7 +589,8 @@
 .cartridge-label h3 {
   margin: 6px 0 3px;
   overflow: hidden;
-  font-size: clamp(9px, 0.95vw, 13px);
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: clamp(8px, 0.9vw, 12px);
   font-weight: 950;
   line-height: 1.25;
   white-space: nowrap;

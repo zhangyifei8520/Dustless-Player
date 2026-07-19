@@ -172,7 +172,7 @@ test("side decorations use the reduced desktop type scale and Mono wordmark", as
   assert.match(selectorRule(css, ".left-decor small"), /font-size:\s*12\.96px;/);
   assert.match(selectorRule(css, ".right-decor"), /width:\s*250px;/);
   assert.match(selectorRule(css, ".lets-play"), /font-size:\s*21\.6px;/);
-  assert.match(selectorRule(css, ".decor-info-card p"), /font-size:\s*12\.96px;/);
+  assert.match(selectorRule(css, ".decor-info-card p"), /font-size:\s*14\.26px;/);
 });
 
 test("idle screen uses the supplied rainbow boot-title treatment", async () => {
@@ -201,10 +201,15 @@ test("side decorations use the supplied vector pixel smile", async () => {
   assert.match(selectorRule(css, ".decor-smile"), /height:\s*auto;/);
   assert.match(selectorRule(css, ".right-smile"), /width:\s*42px;/);
   assert.match(selectorRule(css, ".right-smile"), /z-index:\s*2;/);
-  assert.match(selectorRule(css, ".right-smile"), /left:\s*151px;/);
-  assert.match(selectorRule(css, ".right-smile"), /transform:\s*rotate\(-6deg\);/);
+  assert.match(selectorRule(css, ".right-smile"), /left:\s*152px;/);
+  assert.match(selectorRule(css, ".right-smile"), /transform:\s*rotate\(25deg\);/);
   assert.match(selectorRule(css, ".lets-play"), /width:\s*109px;/);
   assert.match(selectorRule(css, ".lets-play"), /font-family:\s*"ChillPixelsMono";/);
+  assert.match(selectorRule(css, ".decor-info-card"), /box-sizing:\s*border-box;/);
+  assert.match(selectorRule(css, ".decor-info-card"), /width:\s*213px;/);
+  assert.match(selectorRule(css, ".decor-info-card"), /min-height:\s*158px;/);
+  assert.match(selectorRule(css, ".decor-info-card"), /font-family:\s*"ChillPixelsMono";/);
+  assert.match(selectorRule(css, ".decor-info-card p"), /font-size:\s*14\.26px;/);
   assert.doesNotMatch(css, /\.decor-smile::before/);
 });
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useReducer, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import type { Cartridge } from "../data/cartridges";
 import {
   buildCartridgePool,
@@ -23,6 +24,7 @@ const fallbackPool = buildCartridgePool(FALLBACK_LIBRARY_CATALOG);
 const fallbackRecommendations = pickRecommendations(fallbackPool, [], () => 0);
 
 export function GameConsole() {
+  const pathname = usePathname();
   const [state, dispatch] = useReducer(playerReducer, initialPlayerState);
   const [notice, setNotice] = useState<string | null>(null);
   const [catalogPool, setCatalogPool] = useState<Cartridge[]>(fallbackPool);
@@ -102,24 +104,22 @@ export function GameConsole() {
     });
   };
 
-  const showNavNotice = (label: string) => setNotice(`${label}页面准备中`);
-
   return (
     <>
       <header className="site-header">
         <nav aria-label="主导航">
-          <button type="button" onClick={() => window.location.assign("/")}>
+          <button type="button" aria-current={pathname === "/" ? "page" : undefined} onClick={() => window.location.assign("/")}>
             <span className="nav-icon nav-home" aria-hidden="true" />
-            首页
+            <span className="nav-label">首页</span>
           </button>
-          <button type="button" onClick={() => window.location.assign("/library")}>
+          <button type="button" aria-current={pathname === "/library" ? "page" : undefined} onClick={() => window.location.assign("/library")}>
             <span className="nav-icon nav-library" aria-hidden="true" />
-            收藏库
+            <span className="nav-label">收藏库</span>
           </button>
-          <button type="button" onClick={() => showNavNotice("关于")}>
+          <a href="/about">
             <span className="nav-icon nav-about" aria-hidden="true">?</span>
-            关于
-          </button>
+            <span className="nav-label">关于</span>
+          </a>
         </nav>
       </header>
 
@@ -128,6 +128,7 @@ export function GameConsole() {
         <p>Ready to play?</p>
         <h1>不吃灰播放器<br /><span>DUSTLESS PLAYER</span></h1>
         <i className="decor-underline" aria-hidden="true" />
+        <p className="left-message">人生收藏游戏机 把收藏变成人生行动</p>
         <small>Drag your favorite game cartridge into the slot and let&apos;s play!</small>
         <b aria-hidden="true">»»</b>
       </aside>

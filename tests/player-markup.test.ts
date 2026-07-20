@@ -112,3 +112,13 @@ test("homepage footer uses its calibrated smaller visual scale", async () => {
   assert.match(styles, /\.site-footer \{[^}]*font-size: 7px/);
   assert.match(styles, /\.site-footer strong \{[^}]*font-size: 10px/);
 });
+
+test("side decorations use the console safety zone on desktop", async () => {
+  const styles = await readFile(new URL("../src/styles/pixel.css", import.meta.url), "utf8");
+
+  assert.match(styles, /--console-stage-width:/);
+  assert.match(styles, /\.left-decor \{[^}]*right: calc\(50% \+ var\(--console-stage-width\) \/ 2/);
+  assert.match(styles, /\.right-decor \{[^}]*left: calc\(50% \+ var\(--console-stage-width\) \/ 2/);
+  assert.match(styles, /--side-decor-scale: clamp\(/);
+  assert.match(styles, /\.left-decor,\s*\.right-decor \{[^}]*transform: scale\(var\(--side-decor-scale\)\)/s);
+});

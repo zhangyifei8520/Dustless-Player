@@ -23,7 +23,7 @@ test("Bilibili player iframe grants the exact required media permissions", () =>
   );
 });
 
-test("ordinary saved webpages enter the in-app reader instead of an iframe", () => {
+test("ordinary saved webpages immediately render the saved summary card instead of an iframe", () => {
   const cartridges = buildCartridgePool(FALLBACK_LIBRARY_CATALOG);
   const cartridge = cartridges.find((item) => item.source === "external");
   assert.ok(cartridge);
@@ -32,9 +32,19 @@ test("ordinary saved webpages enter the in-app reader instead of an iframe", () 
     createElement(SimulatedPlayer, { cartridge }),
   );
 
-  assert.match(html, /sim-reader-loading/);
-  assert.match(html, /READING WEB PAGE/);
+  assert.match(html, /sim-reader-summary/);
+  assert.match(html, /SAVED SUMMARY/);
+  assert.match(html, new RegExp(cartridge.title));
+  assert.match(html, new RegExp(cartridge.summary));
+  assert.doesNotMatch(html, /sim-reader-loading/);
   assert.doesNotMatch(html, /网页预览/);
+});
+
+test("ordinary saved webpages do not request or render fetched page content", async () => {
+  const source = await readFile(new URL("../src/components/SimulatedPlayer.tsx", import.meta.url), "utf8");
+
+  assert.doesNotMatch(source, /api\/reader/);
+  assert.doesNotMatch(source, /sim-reader-content/);
 });
 
 test("the reader fallback clearly keeps the saved card summary", async () => {

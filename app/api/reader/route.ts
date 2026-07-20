@@ -20,7 +20,9 @@ export async function GET(request: Request) {
     let markdown = "";
 
     try {
-      const response = await fetch(`https://r.jina.ai/${encodeURI(sourceUrl)}`, {
+      // sourceUrl is already a normalized URL string; encodeURI would double-encode
+      // percent sequences (e.g. Chinese paths become %25E4...).
+      const response = await fetch(`https://r.jina.ai/${sourceUrl}`, {
         headers: { Accept: "text/markdown" },
         signal: controller.signal,
       });

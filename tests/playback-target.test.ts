@@ -50,6 +50,36 @@ test("builds an embeddable YouTube player URL for a saved video", () => {
   );
 });
 
+test("builds an embeddable YouTube player URL for youtu.be short links", () => {
+  assert.deepEqual(
+    getPlaybackTarget(
+      makeCartridge({
+        source: "youtube" as Cartridge["source"],
+        url: "https://youtu.be/K5KVEU3aaeQ?t=30",
+      }),
+    ),
+    {
+      kind: "embed",
+      src: "https://www.youtube.com/embed/K5KVEU3aaeQ?autoplay=1&rel=0&start=30",
+    },
+  );
+});
+
+test("parses hour/minute/second YouTube timestamps", () => {
+  assert.deepEqual(
+    getPlaybackTarget(
+      makeCartridge({
+        source: "youtube" as Cartridge["source"],
+        url: "https://www.youtube.com/watch?v=K5KVEU3aaeQ&t=1h2m3s",
+      }),
+    ),
+    {
+      kind: "embed",
+      src: "https://www.youtube.com/embed/K5KVEU3aaeQ?autoplay=1&rel=0&start=3723",
+    },
+  );
+});
+
 test("uses the original Xiaohongshu URL as an external target", () => {
   const url = "https://www.xiaohongshu.com/explore/6829a272000000002100a94e";
 

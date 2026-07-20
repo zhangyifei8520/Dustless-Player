@@ -87,7 +87,11 @@ test("restores valid saved recommendations and replaces deleted records", () => 
     () => 0.8,
   );
   assert.equal(withOneMissing.length, 3);
+  assert.equal(withOneMissing[0].id, saved[0].id);
   assert.notEqual(withOneMissing[1].id, "removed");
+  assert.equal(withOneMissing[2].id, saved[2].id);
+  assert.notEqual(withOneMissing[1].id, saved[0].id);
+  assert.notEqual(withOneMissing[1].id, saved[2].id);
 });
 
 test("rerolls each category without reusing the current cards when alternatives exist", () => {

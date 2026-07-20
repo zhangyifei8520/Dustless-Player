@@ -4,6 +4,7 @@ import test from "node:test";
 
 const cssPath = new URL("../src/styles/pixel.css", import.meta.url);
 const consolePath = new URL("../src/components/GameConsole.tsx", import.meta.url);
+const libraryPagePath = new URL("../app/library/page.tsx", import.meta.url);
 const cartridgePath = new URL("../src/components/CartridgeCard.tsx", import.meta.url);
 const recommendationsPath = new URL("../src/lib/recommendations.ts", import.meta.url);
 const smilePath = new URL("../public/assets/pixel-smile.svg", import.meta.url);
@@ -60,6 +61,20 @@ test("navigation artwork and fullscreen label use the calibrated color geometry"
   assert.match(selectorRule(css, ".fullscreen-control small"), /color:\s*#000;/);
 });
 
+test("all pages mark the current navigation item with the same underline", async () => {
+  const [css, consoleSource, librarySource] = await Promise.all([
+    readFile(cssPath, "utf8"),
+    readFile(consolePath, "utf8"),
+    readFile(libraryPagePath, "utf8"),
+  ]);
+
+  assert.match(css, /\.site-header nav \[aria-current="page"\]\s*\{/);
+  assert.match(css, /\.site-header nav \[aria-current="page"\] \.nav-label\s*\{[\s\S]*text-decoration:\s*underline;[\s\S]*text-underline-offset:\s*5px;/);
+  assert.match(consoleSource, /usePathname/);
+  assert.match(consoleSource, /aria-current=\{pathname === "\/" \? "page" : undefined\}/);
+  assert.match(librarySource, /<Link href="\/library" aria-current="page">/);
+});
+
 test("cartridge cards only show source, title, and summary", async () => {
   const [cardSource, recommendationData] = await Promise.all([
     readFile(cartridgePath, "utf8"),
@@ -94,6 +109,7 @@ test("console exposes the approved identity, decor copy, random placeholder, and
   for (const copy of [
     "不吃灰播放器",
     "DUSTLESS PLAYER",
+    "人生收藏游戏机 把收藏变成人生行动",
     "Ready to play?",
     "COLLECT GAMES",
     "UNLOCK MEMORIES",
@@ -111,6 +127,7 @@ test("console exposes the approved identity, decor copy, random placeholder, and
   assert.match(consoleSource, />\s*随机\s*<\/button>/);
   assert.doesNotMatch(consoleSource, />\s*随机推荐\s*<\/button>/);
   assert.match(consoleSource, /className="left-decor"/);
+  assert.match(consoleSource, /className="left-message"/);
   assert.match(consoleSource, /className="right-decor"/);
   assert.match(consoleSource, /className="random-recommendation"/);
 });
@@ -168,6 +185,15 @@ test("console decor uses approved card, control, random-button, and accent geome
   assert.match(selectorRule(css, ".cartridge-yellow"), /--shell:\s*#ffc93c;/);
 });
 
+test("mobile random button is centered below the cartridge rack without changing desktop placement", async () => {
+  const css = await readFile(cssPath, "utf8");
+  const mobile = css.slice(css.indexOf("@media (max-width: 520px)"));
+
+  assert.match(mobile, /\.console-stage\s*\{[\s\S]*margin-bottom:\s*56px;[\s\S]*padding-bottom:\s*0;/);
+  assert.match(mobile, /\.card-rack\s*\{[\s\S]*bottom:\s*0;/);
+  assert.match(mobile, /\.random-recommendation\s*\{[\s\S]*right:\s*auto;[\s\S]*bottom:\s*-50px;[\s\S]*left:\s*50%;[\s\S]*display:\s*inline-flex;/);
+});
+
 test("side decorations use the reduced desktop type scale and Mono wordmark", async () => {
   const css = await readFile(cssPath, "utf8");
 
@@ -180,6 +206,11 @@ test("side decorations use the reduced desktop type scale and Mono wordmark", as
   assert.match(selectorRule(css, ".left-decor h1 span"), /font-size:\s*25px;/);
   assert.match(selectorRule(css, ".left-decor h1 span"), /letter-spacing:\s*\.02em;/);
   assert.match(selectorRule(css, ".left-decor small"), /font-size:\s*12\.96px;/);
+  const leftMessage = selectorRule(css, ".left-message");
+  assert.match(leftMessage, /font-family:\s*"Noto Sans SC"/);
+  assert.match(leftMessage, /font-size:\s*10px;/);
+  assert.match(leftMessage, /color:\s*#4a4f5c;/);
+  assert.match(selectorRule(css, ".left-decor small"), /margin-top:\s*13px;/);
   assert.match(selectorRule(css, ".right-decor"), /width:\s*250px;/);
   assert.match(selectorRule(css, ".lets-play"), /font-size:\s*21\.6px;/);
   assert.match(selectorRule(css, ".decor-info-card p"), /font-size:\s*14\.26px;/);

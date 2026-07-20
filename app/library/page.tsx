@@ -14,15 +14,15 @@ export default function LibraryPage() {
         <nav aria-label="主导航">
           <Link href="/">
             <span className="nav-icon nav-home" aria-hidden="true" />
-            首页
+            <span className="nav-label">首页</span>
           </Link>
-          <Link href="/library">
+          <Link href="/library" aria-current="page">
             <span className="nav-icon nav-library" aria-hidden="true" />
-            收藏库
+            <span className="nav-label">收藏库</span>
           </Link>
-          <a href="#">
+          <a href="/about">
             <span className="nav-icon nav-about" aria-hidden="true">?</span>
-            关于
+            <span className="nav-label">关于</span>
           </a>
         </nav>
       </header>

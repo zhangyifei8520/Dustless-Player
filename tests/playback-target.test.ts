@@ -23,14 +23,14 @@ test("builds the official Bilibili player URL for both video cards", () => {
     getPlaybackTarget(makeCartridge({ url: "https://www.bilibili.com/video/BV1wL9sYEE8t/" })),
     {
       kind: "embed",
-      src: "https://player.bilibili.com/player.html?bvid=BV1wL9sYEE8t&autoplay=1&danmaku=0&refer=1",
+      src: "https://player.bilibili.com/player.html?isOutside=true&bvid=BV1wL9sYEE8t&p=1&autoplay=1&danmaku=0",
     },
   );
   assert.deepEqual(
     getPlaybackTarget(makeCartridge({ url: "https://www.bilibili.com/video/BV1hKKV6MEHM/" })),
     {
       kind: "embed",
-      src: "https://player.bilibili.com/player.html?bvid=BV1hKKV6MEHM&autoplay=1&danmaku=0&refer=1",
+      src: "https://player.bilibili.com/player.html?isOutside=true&bvid=BV1hKKV6MEHM&p=1&autoplay=1&danmaku=0",
     },
   );
 });

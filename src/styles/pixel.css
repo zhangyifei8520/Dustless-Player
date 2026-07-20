@@ -155,7 +155,7 @@
 
 .console-section {
   --console-stage-width: min(900px, calc((100vh - 86px) * 1.0186), calc(100vw - 56px));
-  --side-decor-scale: clamp(.55, calc((100vw - var(--console-stage-width) - 56px) / 560px), 1);
+  --side-decor-scale: clamp(.35, calc((100vw - var(--console-stage-width) - 56px) / 600px), 1);
   display: grid;
   min-height: calc(100vh - 40px);
   place-items: center;
@@ -857,7 +857,7 @@
   transform: scale(var(--side-decor-scale));
 }
 
-.left-decor { position: absolute; top: 28%; right: calc(50% + var(--console-stage-width) / 2 + 24px); left: auto; width: 300px; transform-origin: right center; }
+.left-decor { position: absolute; top: 28%; left: clamp(28px, calc(50% - 650px), 18vw); width: 300px; transform-origin: left center; }
 .left-decor p { margin: 18px 0 12px; color: #4056de; font-size: 14.4px; }
 .left-decor h1 { margin: 0; font-size: 22.2px; line-height: 1.25; letter-spacing: .1em; }
 .left-decor h1 span { font-family: "ChillPixelsMono"; font-size: 25px; letter-spacing: .02em; white-space: nowrap; }
@@ -872,7 +872,7 @@
 
 .decor-underline { display: block; width: 264px; height: 9px; margin-top: -4px; background: #ffe665; transform: skew(-16deg); }
 
-.right-decor { position: absolute; top: 27%; right: auto; left: calc(50% + var(--console-stage-width) / 2 + 24px); width: 250px; transform-origin: left center; }
+.right-decor { position: absolute; top: 27%; right: clamp(28px, calc(50% - 650px), 18vw); width: 250px; transform-origin: right center; }
 .decor-star { position: absolute; top: -12px; left: 5px; color: #ff699d; font-size: 28px; }
 .lets-play { position: relative; width: 109px; margin-left: 30px; padding: 12px 14px; border: 3px solid var(--ink); background: #fffdf5; box-shadow: 3px 3px 0 var(--ink); font-family: "ChillPixelsMono"; font-size: 21.6px; line-height: 1.05; transform: rotate(5deg); }
 .right-smile {
@@ -960,6 +960,11 @@
   .fullscreen-overlay { padding: 14vh 4vw; }
   .fullscreen-frame { width: 92vw; border-width: 3px; box-shadow: 7px 7px 0 #2638c9; }
   .fullscreen-close { top: 20px; right: 20px; width: 42px; height: 42px; }
+}
+
+@media (max-width: 1120px) {
+  .left-decor,
+  .right-decor { display: none; }
 }
 
 @media (max-width: 520px) {

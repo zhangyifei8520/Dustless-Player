@@ -117,8 +117,9 @@ test("side decorations use the console safety zone on desktop", async () => {
   const styles = await readFile(new URL("../src/styles/pixel.css", import.meta.url), "utf8");
 
   assert.match(styles, /--console-stage-width:/);
-  assert.match(styles, /\.left-decor \{[^}]*right: calc\(50% \+ var\(--console-stage-width\) \/ 2/);
-  assert.match(styles, /\.right-decor \{[^}]*left: calc\(50% \+ var\(--console-stage-width\) \/ 2/);
+  assert.match(styles, /\.left-decor \{[^}]*left: clamp\(28px, calc\(50% - 650px\)/);
+  assert.match(styles, /\.right-decor \{[^}]*right: clamp\(28px, calc\(50% - 650px\)/);
   assert.match(styles, /--side-decor-scale: clamp\(/);
   assert.match(styles, /\.left-decor,\s*\.right-decor \{[^}]*transform: scale\(var\(--side-decor-scale\)\)/s);
+  assert.match(styles, /@media \(max-width: 1120px\)[\s\S]*\.left-decor,\s*\.right-decor \{ display: none; \}/);
 });

@@ -123,3 +123,18 @@ test("side decorations use the console safety zone on desktop", async () => {
   assert.match(styles, /\.left-decor,\s*\.right-decor \{[^}]*transform: scale\(var\(--side-decor-scale\)\)/s);
   assert.match(styles, /@media \(max-width: 1120px\)[\s\S]*\.left-decor,\s*\.right-decor \{ display: none; \}/);
 });
+
+test("portrait layout keeps three cartridges inside the rack and protects the console controls", async () => {
+  const styles = await readFile(new URL("../src/styles/pixel.css", import.meta.url), "utf8");
+  const portraitStyles = styles.slice(styles.indexOf("@media (max-width: 520px)"));
+
+  assert.match(portraitStyles, /\.console-stage \{[^}]*padding-bottom: 0/);
+  assert.match(styles, /@media \(max-width: 760px\)[\s\S]*--console-stage-width: min\(854px, calc\(100vw - 24px\)\)/);
+  assert.match(styles, /@media \(max-width: 760px\)[\s\S]*\.console-stage \{[^}]*width: var\(--console-stage-width\)/);
+  assert.match(portraitStyles, /\.card-rack \{[^}]*bottom: 0/);
+  assert.match(portraitStyles, /\.card-rack \{[^}]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
+  assert.doesNotMatch(portraitStyles, /\.card-rack \{[^}]*flex-direction: column/);
+  assert.match(styles, /@media \(max-width: 760px\)[\s\S]*\.console-control \{[^}]*width: 36px; height: 36px/);
+  assert.match(portraitStyles, /\.power-control,\s*\.fullscreen-control \{[^}]*top: calc\(57\.5vw - 13\.8px\)/s);
+  assert.match(styles, /@media \(max-width: 760px\)[\s\S]*\.site-header \{ top: 10px/);
+});

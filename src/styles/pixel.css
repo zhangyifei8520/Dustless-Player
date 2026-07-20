@@ -940,17 +940,18 @@
 @keyframes overlay-in { from { opacity: 0; } to { opacity: 1; } }
 
 @media (max-width: 760px) {
-  .console-section { --console-stage-width: min(854px, 112vw); }
+  .console-section { --console-stage-width: min(854px, calc(100vw - 24px)); }
+  .console-section { box-sizing: border-box; padding-top: 44px; }
   .game-page { padding: 16px 12px 40px; overflow: visible; }
   .left-decor,
   .right-decor,
   .random-recommendation { display: none; }
-  .site-header { align-items: flex-start; }
-  .site-header nav { gap: 3px; }
-  .site-header nav button { gap: 3px; padding: 6px 5px; font-size: 11px; }
-  .site-header nav button span { width: 17px; height: 17px; font-size: 10px; }
-  .console-stage { width: min(854px, 112vw); margin-left: 50%; transform: translateX(-50%); }
-  .console-control { width: 42px; height: 42px; border-width: 2px; }
+  .site-header { top: 10px; right: 12px; align-items: flex-start; }
+  .site-header nav { gap: 4px; }
+  .site-header nav button { gap: 2px; padding: 4px 3px; font-size: 10px; }
+  .site-header nav button span { width: 13px; height: 13px; flex-basis: 13px; font-size: 9px; }
+  .console-stage { width: var(--console-stage-width); margin-left: 50%; transform: translateX(-50%); }
+  .console-control { width: 36px; height: 36px; border-width: 2px; }
   .console-control small { top: -15px; font-size: 7px; }
   .power-symbol { width: 17px; height: 17px; border-width: 3px; }
   .power-symbol::after { width: 3px; height: 10px; }
@@ -968,35 +969,37 @@
 }
 
 @media (max-width: 520px) {
-  .console-section { --console-stage-width: 100%; }
+  .console-section { --console-stage-width: min(854px, calc(100vw - 24px)); }
   .console-stage {
-    margin-top: 16px;
+    margin-top: 12px;
     margin-left: 0;
-    padding-bottom: 720px;
+    padding-bottom: 0;
     transform: none;
   }
   .console-art { width: 100%; }
   .screen-layer { top: calc(6.55vw - 1.572px); }
   .power-control,
-  .fullscreen-control { top: calc(62.4vw - 14.976px); }
+  .fullscreen-control { top: calc(57.5vw - 13.8px); }
   .slot-dropzone { top: calc(60.5vw - 14.52px); }
   .card-rack {
     right: 9%;
-    top: calc(102vw - 24.48px);
-    bottom: auto;
     left: 9%;
-    display: flex;
-    height: auto;
-    flex-direction: column;
-    gap: 40px;
+    top: auto;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    height: 29%;
+    gap: 6.86%;
   }
-  .cartridge { width: 100%; height: 205px; padding: 12px 14px 9px; }
-  .cartridge-head { font-size: 11px; }
-  .cartridge-label { margin-top: 7px; padding: 10px 12px; }
-  .cartridge-source span { font-size: 16px; }
-  .cartridge-label h3 { margin-top: 6px; font-size: 15px; }
-  .cartridge-label p { font-size: 10px; -webkit-line-clamp: 3; }
-  .cartridge-play { height: 34px; font-size: 10px; }
+  .cartridge { width: auto; height: 100%; padding: 4% 5% 3%; }
+  .cartridge-head { font-size: 7px; }
+  .cartridge-notch { width: 22px; height: 4px; }
+  .cartridge-label { margin-top: 4%; padding: 6px 5px; }
+  .cartridge-source span { font-size: 9px; }
+  .cartridge-label h3 { margin-top: 4px; font-size: 8px; }
+  .cartridge-label p { font-size: 7px; line-height: 1.25; -webkit-line-clamp: 2; }
+  .cartridge-play { height: 22px; gap: 3px; font-size: 7px; }
+  .cartridge-play span { border-top-width: 4px; border-bottom-width: 4px; border-left-width: 6px; }
   .drag-hint { display: none; }
   .idle-screen small { display: none; }
 }

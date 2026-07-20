@@ -56,7 +56,10 @@
             </div>
           </div>
           <div>
-            <div style="font-family:'Press Start 2P'; font-size:14px;">{{ playerName }}</div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div class="player-name" style="font-family:'Press Start 2P'; font-size:14px;">{{ playerName }}</div>
+              <a href="#" onClick="{{ openProfileEdit }}" title="修改用户名" aria-label="修改用户名" style="width:24px; height:24px; background:#ffc93c; color:#1c1b2e; border:2px solid #1c1b2e; border-radius:5px; box-shadow:2px 2px 0 #1c1b2e; display:flex; align-items:center; justify-content:center; font-family:'Press Start 2P'; font-size:12px; line-height:1;" style-hover="background:#2f52d9; color:#fff; text-decoration:none;">✎</a>
+            </div>
             <div style="font-family:'Press Start 2P'; font-size:9px; color:#2f52d9; margin-top:8px;">EXPLORER <span style="font-family:'Noto Sans SC'; font-weight:700; font-size:11px;">探索者</span></div>
             <div style="font-size:11px; color:#5a6b8c; margin-top:6px;">Discovering New Worlds</div>
           </div>
@@ -65,6 +68,27 @@
         <div style="font-family:'Press Start 2P'; font-size:9px; color:#1c1b2e;">AI OBSERVED STYLE</div>
         <div style="font-family:'Noto Sans SC'; font-weight:700; font-size:13px; margin-top:10px; line-height:1.7;">喜欢收集新知识<br>探索不同领域的可能性</div>
       </div>
+
+      <!-- ===== PLAYER NAME MODAL ===== -->
+      <sc-if value="{{ profileEditOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeProfileEdit }}" style="position:fixed; inset:0; background:rgba(28,27,46,.6); z-index:210; display:flex; align-items:center; justify-content:center; padding:24px;">
+          <div onClick="{{ stopProp }}" style="background:#f7f2e7; border:4px solid #1c1b2e; border-radius:14px; box-shadow:8px 8px 0 #1c1b2e; width:360px; max-width:92vw; overflow:hidden; animation:popIn .2s ease-out;">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:13px 16px; background:#2f52d9; border-bottom:3px solid #1c1b2e;">
+              <span style="font-family:'Press Start 2P'; font-size:10px; color:#fff;">EDIT PLAYER <span style="font-family:'Noto Sans SC'; font-weight:900; font-size:12px;">修改用户名</span></span>
+              <a href="#" onClick="{{ closeProfileEdit }}" style="width:28px; height:28px; background:#f7f2e7; border:2px solid #1c1b2e; border-radius:6px; display:flex; align-items:center; justify-content:center; font-family:'Press Start 2P'; font-size:10px; color:#1c1b2e;" style-hover="background:#1c1b2e; color:#fff; text-decoration:none;">X</a>
+            </div>
+            <div style="padding:18px 18px 20px;">
+              <label style="display:block; font-family:'Noto Sans SC'; font-weight:900; font-size:13px; color:#1c1b2e;">玩家名称
+                <input type="text" value="{{ profileNameDraft }}" onChange="{{ profileNameChange }}" maxlength="18" autocomplete="off" style="display:block; box-sizing:border-box; width:100%; margin-top:8px; background:#fff; color:#1c1b2e; border:3px solid #1c1b2e; border-radius:7px; padding:10px 12px; font-family:'Press Start 2P','Noto Sans SC',monospace; font-size:13px; outline:none;">
+              </label>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:18px;">
+                <a href="#" onClick="{{ closeProfileEdit }}" style="display:block; text-align:center; background:#f7f2e7; color:#1c1b2e; border:3px solid #1c1b2e; border-radius:8px; box-shadow:3px 3px 0 #1c1b2e; padding:10px 0; font-family:'Noto Sans SC'; font-weight:900; font-size:13px;" style-hover="background:#1c1b2e; color:#fff; text-decoration:none;">取消</a>
+                <a href="#" onClick="{{ saveProfileEdit }}" style="display:block; text-align:center; background:#ffc93c; color:#1c1b2e; border:3px solid #1c1b2e; border-radius:8px; box-shadow:3px 3px 0 #1c1b2e; padding:10px 0; font-family:'Noto Sans SC'; font-weight:900; font-size:13px;" style-hover="background:#1c1b2e; color:#ffc93c; text-decoration:none;">保存</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
 
       <!-- Insights -->
       <div style="background:#f7f2e7; border:3px solid #1c1b2e; border-radius:14px; box-shadow:5px 5px 0 #1c1b2e; padding:16px;">
@@ -438,7 +462,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;playerName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;TED&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Player&quot;},&quot;totalCartridges&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:21,&quot;min&quot;:0,&quot;max&quot;:9999,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Player&quot;}}">
 class Component extends DCLogic {
-  state = { aiIndex: 0, aiDone: false, aiDoneMsg: '', modalCat: null, syncOpen: false, syncMsg: '', logOpen: false, urlVal: '', addStage: null, totalBump: 0 };
+  state = { aiIndex: 0, aiDone: false, aiDoneMsg: '', modalCat: null, syncOpen: false, syncMsg: '', logOpen: false, urlVal: '', addStage: null, totalBump: 0, profileEditOpen: false, profileNameDraft: '', playerName: null };
   logItems = [
     { date: '07.14', tag: '已开启', bg: '#2f52d9', fg: '#fff', title: 'Python全课程' },
     { date: '07.11', tag: '已收藏', bg: '#ffc93c', fg: '#1c1b2e', title: '乌布印尼VLOG' },
@@ -519,7 +543,7 @@ class Component extends DCLogic {
   save() {
     try {
       this.checkAch();
-      localStorage.setItem('nochigui-library-v3', JSON.stringify({ dataVersion: this.dataVersion, catalog: this.catalog, logItems: this.logItems, totalBump: this.state.totalBump, unlocked: this.unlocked, unlockSeq: this.unlockSeq, delCount: this.delCount, syncCount: this.syncCount }));
+      localStorage.setItem('nochigui-library-v3', JSON.stringify({ dataVersion: this.dataVersion, catalog: this.catalog, logItems: this.logItems, totalBump: this.state.totalBump, playerName: this.state.playerName, unlocked: this.unlocked, unlockSeq: this.unlockSeq, delCount: this.delCount, syncCount: this.syncCount }));
     } catch (e) {}
   }
   componentDidMount() {
@@ -548,6 +572,7 @@ class Component extends DCLogic {
         }
         if (d.logItems) this.logItems = d.logItems;
         if (typeof d.totalBump === 'number') this.setState({ totalBump: d.totalBump });
+        if (typeof d.playerName === 'string') this.setState({ playerName: d.playerName });
         if (d.unlocked) this.unlocked = d.unlocked;
         if (d.unlockSeq) this.unlockSeq = d.unlockSeq;
         if (typeof d.delCount === 'number') this.delCount = d.delCount;
@@ -774,10 +799,33 @@ class Component extends DCLogic {
           React.createElement('div', { style: { fontFamily: "'Noto Sans SC'", fontWeight: 900, fontSize: 13, marginTop: 6 } }, info ? info.title : '新收藏内容'),
           React.createElement('div', { style: { fontFamily: "'Noto Sans SC'", fontWeight: 700, fontSize: 11, color: '#2f52d9', marginTop: 4 } }, label))));
   }
+  openProfileEdit(e) {
+    e.preventDefault();
+    this.setState({ profileEditOpen: true, profileNameDraft: this.state.playerName || this.props.playerName || 'TED' });
+  }
+  closeProfileEdit(e) {
+    e.preventDefault();
+    this.setState({ profileEditOpen: false });
+  }
+  profileNameChange(e) {
+    this.setState({ profileNameDraft: e.target.value });
+  }
+  saveProfileEdit(e) {
+    e.preventDefault();
+    const nextName = String(this.state.profileNameDraft || '').trim();
+    if (!nextName) return;
+    this.setState({ playerName: nextName, profileEditOpen: false }, () => this.save());
+  }
   renderVals() {
     const cur = this.suggestions[this.state.aiIndex];
     return {
-      playerName: this.props.playerName ?? 'NATHAN',
+      playerName: this.state.playerName || this.props.playerName || 'TED',
+      profileEditOpen: this.state.profileEditOpen,
+      profileNameDraft: this.state.profileNameDraft,
+      openProfileEdit: (e) => this.openProfileEdit(e),
+      closeProfileEdit: (e) => this.closeProfileEdit(e),
+      profileNameChange: (e) => this.profileNameChange(e),
+      saveProfileEdit: (e) => this.saveProfileEdit(e),
       ...this.statVals(),
       aiTitle: cur.title, aiText: cur.text, aiFeatured: !!cur.featured,
       aiDone: this.state.aiDone, aiDoneMsg: this.state.aiDone ? this.state.aiDoneMsg : '',

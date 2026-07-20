@@ -18,6 +18,19 @@ test("imported library page loads its standalone runtime", async () => {
   assert.match(source, /src="\.\/support\.js"/);
 });
 
+test("library player profile exposes an editable username modal", async () => {
+  const source = await readFile(new URL("../public/library-page/index.html", import.meta.url), "utf8");
+
+  assert.match(source, /class="player-name"/);
+  assert.match(source, /title="修改用户名"/);
+  assert.match(source, /onClick="\{\{ openProfileEdit \}\}"/);
+  assert.match(source, /profileEditOpen/);
+  assert.match(source, /profileNameDraft/);
+  assert.match(source, /保存/);
+  assert.match(source, /取消/);
+  assert.match(source, /setState\(\{\s*playerName:/);
+});
+
 test("library route reuses the homepage navigation outside the scaled embed", async () => {
   const route = await readFile(new URL("../app/library/page.tsx", import.meta.url), "utf8");
   const embedded = await readFile(new URL("../public/library-page/index.html", import.meta.url), "utf8");

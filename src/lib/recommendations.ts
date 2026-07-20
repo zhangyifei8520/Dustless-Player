@@ -150,7 +150,7 @@ export function parseLibraryCatalog(raw: string | null): LibraryCatalog {
 function sourceFor(url: string): Cartridge["source"] {
   try {
     const host = new URL(url).hostname;
-    if (host.includes("bilibili.com")) return "bilibili";
+    if (host.includes("bilibili.com") || host === "b23.tv") return "bilibili";
     if (host.includes("youtube.com") || host === "youtu.be") return "youtube";
     if (host.includes("xiaohongshu.com") || host.includes("xhslink.com")) return "xiaohongshu";
   } catch { /* invalid URLs are filtered before this point */ }
@@ -194,13 +194,28 @@ export function pickRecommendations(pool: Cartridge[], current: Cartridge[], ran
   });
 }
 
+function refillRecommendations(saved: (Cartridge | null)[], pool: Cartridge[], random: () => number): Cartridge[] {
+  const used = new Set(saved.flatMap((card) => (card ? [card.id] : [])));
+  return categories.flatMap((category, index) => {
+    const kept = saved[index];
+    if (kept) return [kept];
+    const preferred = pool.filter((item) => item.category === category);
+    const alternatives = pool.filter((item) => item.category !== category);
+    const card = selectCandidate(preferred.length ? preferred : alternatives, undefined, used, random);
+    if (!card) return [];
+    used.add(card.id);
+    return [card];
+  });
+}
+
 export function restoreRecommendations(raw: string | null, pool: Cartridge[], random = Math.random): Cartridge[] {
   try {
     const ids = JSON.parse(raw ?? "")?.ids;
     if (Array.isArray(ids) && ids.length === 3) {
-      const saved = ids.map((id) => pool.find((item) => item.id === id)).filter((item): item is Cartridge => Boolean(item));
-      if (saved.length === 3) return saved;
-      return pickRecommendations(pool, saved, random);
+      const saved = ids.map((id) => pool.find((item) => item.id === id) ?? null);
+      const kept = saved.filter((item): item is Cartridge => Boolean(item));
+      if (kept.length === 3) return kept;
+      return refillRecommendations(saved, pool, random);
     }
   } catch { /* regenerate below */ }
   return pickRecommendations(pool, [], random);

@@ -494,6 +494,28 @@ class Component extends DCLogic {
     if (msg) { clearTimeout(this._t); this._t = setTimeout(() => this.setState({ aiDone: false }), 2500); }
   }
   dataVersion = 4;
+  today() {
+    const d = new Date();
+    return String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0');
+  }
+  todayFull() { return new Date().getFullYear() + '.' + this.today(); }
+  extractUrl(text) {
+    // share text like 「【标题】https://b23.tv/xxx 快来看」 → pull out the first link
+    const m = String(text || '').match(/https?:\/\/[^\s【】()（）"'<>]+/);
+    return m ? m[0].replace(/[),.。，;；!！?？】]+$/, '') : null;
+  }
+  classifyLocally(url) {
+    let t = String(url || '');
+    try { t = decodeURIComponent(t); } catch (e) {}
+    t = t.toLowerCase();
+    const cat = /健身|减脂|瘦身|瑜伽|普拉提|拉伸|跑步|马拉松|半马|燃脂|哑铃|食谱|菜谱|饮食|睡眠|冥想|fitness|workout|yoga|pilates|diet|recipe|sleep/.test(t) ? 'health'
+      : /旅行|旅游|vlog|徒步|露营|攻略|景点|美食|小吃|探店|户外|travel|trip|hiking|camp|tour/.test(t) ? 'explore'
+      : 'learn';
+    let host = '';
+    try { const link = this.extractUrl(t); if (link) host = new URL(link).hostname.replace(/^www\./, ''); } catch (e) {}
+    const title = (host.includes('bilibili') || host === 'b23.tv') ? 'B站收藏' : host.includes('youtu') ? 'YouTube收藏' : (host.includes('xiaohongshu') || host.includes('xhslink')) ? '小红书收藏' : '新收藏内容';
+    return { cat, title, desc: '待识别 · 可编辑', icon: 'UX' };
+  }
   save() {
     try {
       this.checkAch();
@@ -510,16 +532,17 @@ class Component extends DCLogic {
             this.catalog = d.catalog;
           } else {
             // source data updated: keep source catalog, merge user's statuses + extra added cards
+            // match by url (unique per card) rather than title, so same-titled cards don't collide
+            const keyOf = (i) => i.url || (i.code + ':' + i.title);
             for (const cat of ['health', 'learn', 'explore']) {
               const savedItems = d.catalog[cat] ? d.catalog[cat].items : [];
               const srcItems = this.catalog[cat].items;
-              const srcTitles = new Set(srcItems.map(i => i.title));
+              const srcByKey = new Map(srcItems.map(i => [keyOf(i), i]));
               for (const si of savedItems) {
-                const m = srcItems.find(i => i.title === si.title);
-                if (m) m.st = si.st;
-                else if (si.url && !srcTitles.has(si.title)) srcItems.push(si); // user-added cards survive
+                const m = srcByKey.get(keyOf(si));
+                if (m) { m.st = si.st; }
+                else { srcItems.push(si); srcByKey.set(keyOf(si), si); } // user-added cards survive
               }
-
             }
           }
         }
@@ -534,9 +557,18 @@ class Component extends DCLogic {
       }
     } catch (e) {}
     this._fit = () => {
-      document.body.style.zoom = 1;
+      // Firefox < 126 has no CSS zoom; scale via transform there instead.
+      if (typeof CSS !== 'undefined' && CSS.supports && CSS.supports('zoom', '1')) {
+        document.body.style.zoom = 1;
+        const h = document.body.scrollHeight;
+        document.body.style.zoom = Math.min(1, window.innerHeight / h);
+        return;
+      }
+      document.body.style.transform = '';
       const h = document.body.scrollHeight;
-      document.body.style.zoom = Math.min(1, window.innerHeight / h);
+      const scale = Math.min(1, window.innerHeight / h);
+      document.body.style.transformOrigin = 'top center';
+      document.body.style.transform = 'scale(' + scale + ')';
     };
     this._fit();
     window.addEventListener('resize', this._fit);
@@ -546,31 +578,60 @@ class Component extends DCLogic {
   componentWillUnmount() { window.removeEventListener('resize', this._fit); }
   async addCartridge() {
     clearTimeout(this._a1); clearTimeout(this._a2);
-    const url = (this.state.urlVal || '').trim();
+    const raw = (this.state.urlVal || '').trim();
+    // users paste share text like 「【标题】https://b23.tv/xxx」— work on the link inside it
+    const url = this.extractUrl(raw);
     this.setState({ addStage: 'scan', addInfo: null });
     const t0 = Date.now();
-    let info = null;
-    try {
-      const res = await window.claude.complete(
-        '你是收藏分类器。根据下面的链接(或含标题的分享文本)推断内容,分到三类之一: health(健康生活:运动/饮食/睡眠/身心), learn(学习创造:知识/技能/工具/创作), explore(探索世界:旅行/美食/地点/生活方式)。无法判断时选 learn。只回复 JSON,不要其他文字: {"cat":"health|learn|explore","title":"中文标题≤10字","desc":"中文简介≤14字","icon":"1-3位大写字母或数字"}\n\n内容: ' + (url || '(空)'));
-      info = JSON.parse(res.match(/\{[\s\S]*\}/)[0]);
-    } catch (e) {}
-    if (!info || !this.catalog[info.cat]) info = { cat: 'learn', title: '新收藏内容', desc: '待识别', icon: 'UX' };
+    let remote = null;
+    // 1) site's own classify API: resolves short links, fetches the real title/cover,
+    //    and adds AI classification when ANTHROPIC_API_KEY is configured on the server
+    if (url) {
+      try {
+        const res = await fetch('/api/classify?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(raw.slice(0, 200)), { signal: AbortSignal.timeout(20000) });
+        if (res.ok) remote = await res.json();
+      } catch (e) {}
+    }
+    // 2) window.claude only exists inside Claude Artifacts
+    let ai = null;
+    if (!remote || !remote.cat) {
+      try {
+        if (window.claude && typeof window.claude.complete === 'function') {
+          const res = await window.claude.complete(
+            '你是收藏分类器。根据下面的链接(或含标题的分享文本)推断内容,分到三类之一: health(健康生活:运动/饮食/睡眠/身心), learn(学习创造:知识/技能/工具/创作), explore(探索世界:旅行/美食/地点/生活方式)。无法判断时选 learn。只回复 JSON,不要其他文字: {"cat":"health|learn|explore","title":"中文标题≤10字","desc":"中文简介≤14字","icon":"1-3位大写字母或数字"}\n\n内容: ' + (raw || '(空)'));
+          ai = JSON.parse(res.match(/\{[\s\S]*\}/)[0]);
+        }
+      } catch (e) {}
+    }
+    // 3) local keyword rules keep the feature working with no AI at all
+    const local = this.classifyLocally(raw || url);
+    const info = Object.assign({}, local, ai || {}, remote || {});
+    if (!this.catalog[info.cat]) info.cat = local.cat;
+    const finalUrl = (remote && remote.url) || url || undefined;
+    let thumb = (remote && remote.thumb) || null;
+    if (!thumb && finalUrl) {
+      const yt = finalUrl.match(/youtu\.be\/([A-Za-z0-9_-]{6,})|[?&]v=([A-Za-z0-9_-]{6,})/);
+      const ytId = yt && (yt[1] || yt[2]);
+      if (ytId) thumb = 'https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg';
+    }
     info.title = String(info.title || '新收藏内容').slice(0, 10);
     info.desc = String(info.desc || '').slice(0, 14);
     if (!/^[A-Z0-9]{1,3}$/.test(info.icon || '')) {
       const m = String(info.title).match(/[A-Za-z0-9]{1,3}/);
       info.icon = m ? m[0].toUpperCase() : { health: 'HP', learn: 'LV', explore: 'GO' }[info.cat];
     }
-    const meta = { health: { zh: '健康生活', color: '#3ecf8e', prefix: 'HB', top: '33%' }, learn: { zh: '学习创造', color: '#ff6fa5', prefix: 'LS', top: '49%' }, explore: { zh: '探索世界', color: '#ffc93c', prefix: 'EX', top: '65%' } }[info.cat];
+    const meta = { health: { zh: '健康生活', color: '#3ecf8e', prefix: 'HB', top: '33%' }, learn: { zh: '学习创造', color: '#ff6fa5', prefix: 'LC', top: '49%' }, explore: { zh: '探索世界', color: '#ffc93c', prefix: 'EX', top: '65%' } }[info.cat];
     const wait = Math.max(0, 400 - (Date.now() - t0));
     setTimeout(() => {
       this.setState({ addStage: 'tag', addInfo: { ...info, ...meta } });
       this._a1 = setTimeout(() => this.setState({ addStage: 'fly' }), 700);
       this._a2 = setTimeout(() => {
         const items = this.catalog[info.cat].items;
-        items.push({ code: meta.prefix + '-' + String(items.length + 1).padStart(2, '0'), icon: info.icon, title: info.title, desc: info.desc, st: '吃灰中', date: '07.19', url: url || undefined, src: url.includes('bilibili') ? 'B站' : (url.includes('xiaohongshu') || url.includes('xhslink')) ? '小红书' : url.includes('youtu') ? 'YouTube' : '收藏' });
-        this.logItems.unshift({ date: '07.19', tag: '已收藏', bg: '#ffc93c', fg: '#1c1b2e', title: info.title });
+        // next free number, not items.length + 1 — deleting a card must not create duplicate codes
+        const nextNo = items.reduce((max, i) => { const n = Number.parseInt(String(i.code).split('-')[1], 10); return Number.isFinite(n) ? Math.max(max, n) : max; }, 0) + 1;
+        const sv = finalUrl || '';
+        items.push({ code: meta.prefix + '-' + String(nextNo).padStart(2, '0'), icon: info.icon, title: info.title, desc: info.desc, st: '吃灰中', date: this.today(), url: finalUrl, ...(thumb ? { thumb } : {}), src: (sv.includes('bilibili') || sv.includes('b23.tv')) ? 'B站' : (sv.includes('xiaohongshu') || sv.includes('xhslink')) ? '小红书' : sv.includes('youtu') ? 'YouTube' : '收藏' });
+        this.logItems.unshift({ date: this.today(), tag: '已收藏', bg: '#ffc93c', fg: '#1c1b2e', title: info.title });
         this.setState({ addStage: null, urlVal: '', syncMsg: '✔ 已入库 → ' + meta.zh }, () => this.save());
         clearTimeout(this._st);
         this._st = setTimeout(() => this.setState({ syncMsg: '' }), 2500);
@@ -622,12 +683,12 @@ class Component extends DCLogic {
       collector: all.length >= 30,
       curator: this.delCount >= 5,
       zerodust: all.length > 0 && (all.length - played) / all.length < 0.5,
-      speedrun: all.some(i => i.st === '已开启' && i.date === '07.19'),
+      speedrun: all.some(i => i.st === '已开启' && i.date === this.today()),
       sync: this.syncCount >= 1,
       fullclear: cats.some(c => this.catalog[c].items.length > 0 && this.catalog[c].items.every(i => i.st === '已开启')),
     };
     for (const d of this.achDefs) {
-      if (ok[d.id] && !this.unlocked[d.id]) { this.unlocked[d.id] = '2026.07.19'; this.unlockSeq.push(d.id); }
+      if (ok[d.id] && !this.unlocked[d.id]) { this.unlocked[d.id] = this.todayFull(); this.unlockSeq.push(d.id); }
     }
   }
   statVals() {
@@ -679,10 +740,10 @@ class Component extends DCLogic {
         e.preventDefault();
         if (it.st === '已开启') {
           it.st = '吃灰中';
-          this.logItems.unshift({ date: '07.19', tag: '吃灰中', bg: '#f7f2e7', fg: '#1c1b2e', title: it.title });
+          this.logItems.unshift({ date: this.today(), tag: '吃灰中', bg: '#f7f2e7', fg: '#1c1b2e', title: it.title });
         } else {
           it.st = '已开启';
-          this.logItems.unshift({ date: '07.19', tag: '已开启', bg: '#2f52d9', fg: '#fff', title: it.title });
+          this.logItems.unshift({ date: this.today(), tag: '已开启', bg: '#2f52d9', fg: '#fff', title: it.title });
         }
         this.save();
         this.forceUpdate();
@@ -741,7 +802,7 @@ class Component extends DCLogic {
         if (d && cat) {
           const removed = this.catalog[cat].items.splice(d.idx, 1)[0];
           this.delCount += 1;
-          this.logItems.unshift({ date: '07.19', tag: '已删除', bg: '#1c1b2e', fg: '#fff', title: removed.title });
+          this.logItems.unshift({ date: this.today(), tag: '已删除', bg: '#1c1b2e', fg: '#fff', title: removed.title });
           this.setState({ confirmDel: null }, () => this.save());
         }
       },

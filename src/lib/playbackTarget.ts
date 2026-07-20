@@ -18,9 +18,11 @@ export function getPlaybackTarget(cartridge: Cartridge): PlaybackTarget {
     const bvid = cartridge.url.match(/BV[0-9A-Za-z]+/)?.[0];
 
     if (bvid) {
+      // isOutside=true is required for embedding on non-bilibili domains; without it
+      // the player UI loads but refuses to play the stream (black screen at 00:00).
       return {
         kind: "embed",
-        src: `https://player.bilibili.com/player.html?bvid=${bvid}&autoplay=1&danmaku=0&refer=1`,
+        src: `https://player.bilibili.com/player.html?isOutside=true&bvid=${bvid}&p=1&autoplay=1&danmaku=0`,
       };
     }
   }
